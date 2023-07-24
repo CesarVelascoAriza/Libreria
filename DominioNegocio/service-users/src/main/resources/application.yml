@@ -1,6 +1,6 @@
 spring:
   application:
-    name: service-users  datasource:    url: jdbc:mysql://192.168.31.129:3306/db1
+    name: service-users  datasource:    url: jdbc:mysql://192.168.31.129:3306/db1 #jdb de la localizacion de la base de datos
     username: java
     password: Adm1n@2021p@sw
     driver-class-name: com.mysql.cj.jdbc.Driver
