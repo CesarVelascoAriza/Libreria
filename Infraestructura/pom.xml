@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.cava.examples</groupId>
+    <artifactId>Libreria</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>Infraestructura</artifactId>
+  <packaging>pom</packaging>
+   <properties>
+  	<spring-boot-cloud.version>2022.0.3</spring-boot-cloud.version>
+  	<spring-doc.version>1.6.15</spring-doc.version>
+  </properties>
+  <modules>
+  	<module>servidor-gateway</module>
+  	
+  	<module>eureka-server</module>
+  </modules>
+  <dependencyManagement>
+  	<dependencies>
+  		<dependency>
+  			<groupId>org.springframework.cloud</groupId>
+  			<artifactId>spring-cloud-dependencies</artifactId>
+  			<version>${spring-boot-cloud.version}</version>
+  			<type>pom</type>
+  			<scope>import</scope>
+  		</dependency>
+  	</dependencies>
+  </dependencyManagement>
+ 
+</project>
