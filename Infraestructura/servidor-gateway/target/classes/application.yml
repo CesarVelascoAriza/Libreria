@@ -1,7 +1,20 @@
 spring:
   application:
     name: servidor-gateway
-server:  port: 8762
-eureka:  client:    service-url:      defaultZone: http://localhost:8761/eureka
+  cloud:
+    gateway:
+      routes:
+        - id: service-users
+          uri: lb://service-users
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - StripPrefix=2
+server:
+  port: 8762
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
   instance:
-      instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
