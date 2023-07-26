@@ -57,7 +57,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping
+    @GetMapping("/search-username")
     public ResponseEntity<?> getUserName(@RequestParam String userName){
         Optional<User> userOptional =service.findByName(userName);
         if (!userOptional.isPresent()) {

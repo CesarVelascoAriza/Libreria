@@ -15,4 +15,12 @@ public class UserDTO {
     @NotEmpty(message = "this elemet is not empty")
     @NotBlank(message = "this camp is not blank")
     private String password;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
