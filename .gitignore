@@ -16,3 +16,11 @@ Infraestructura/servidor-gateway/.factorypath
 Infraestructura/servidor-gateway/.project
 
 DominioNegocio/service-users/.project
+
+Infraestructura/AdminServer/target/classes/META-INF/
+
+Infraestructura/AdminServer/.classpath
+
+Infraestructura/AdminServer/.factorypath
+
+Infraestructura/AdminServer/.project
