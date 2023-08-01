@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="AdminServer" target="17" />
+      <module name="commons-users" target="17" />
+      <module name="DominioNegocio" target="17" />
+      <module name="eureka-server" target="17" />
+      <module name="Infraestructura" target="17" />
+      <module name="Libreria" target="17" />
+      <module name="service-oaut-server" target="20" />
+      <module name="service-oauth" target="17" />
+      <module name="service-users" target="17" />
+      <module name="servidor-gateway" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

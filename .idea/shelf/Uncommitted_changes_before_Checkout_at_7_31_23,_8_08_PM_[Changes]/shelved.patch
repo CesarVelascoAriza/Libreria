@@ -1,0 +1,18 @@
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"CompilerConfiguration\">\n    <annotationProcessing>\n      <profile default=\"true\" name=\"Default\" enabled=\"true\" />\n      <profile name=\"Maven default annotation processors profile\" enabled=\"true\">\n        <sourceOutputDir name=\"target/generated-sources/annotations\" />\n        <sourceTestOutputDir name=\"target/generated-test-sources/test-annotations\" />\n        <outputRelativeToContentRoot value=\"true\" />\n        <module name=\"servidor-gateway\" />\n        <module name=\"commons-users\" />\n        <module name=\"service-oauth\" />\n        <module name=\"eureka-server\" />\n        <module name=\"AdminServer\" />\n        <module name=\"service-users\" />\n      </profile>\n    </annotationProcessing>\n  </component>\n  <component name=\"JavacSettings\">\n    <option name=\"ADDITIONAL_OPTIONS_OVERRIDE\">\n      <module name=\"commons-users\" options=\"-parameters\" />\n      <module name=\"service-oauth\" options=\"-parameters\" />\n    </option>\n  </component>\n</project>
+===================================================================
+diff --git a/.idea/compiler.xml b/.idea/compiler.xml
+--- a/.idea/compiler.xml	
++++ b/.idea/compiler.xml	
+@@ -15,6 +15,9 @@
+         <module name="service-users" />
+       </profile>
+     </annotationProcessing>
++    <bytecodeTargetLevel>
++      <module name="service-oaut-server" target="20" />
++    </bytecodeTargetLevel>
+   </component>
+   <component name="JavacSettings">
+     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
