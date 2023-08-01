@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.commons.users.entitis.User;
+
 import co.com.cava.examples.service.users.dto.UserDTO;
-import co.com.cava.examples.service.users.entity.User;
+import co.com.cava.examples.service.users.mappers.UserMapper;
 import co.com.cava.examples.service.users.service.UserService;
 import jakarta.validation.Valid;
 
@@ -50,9 +52,7 @@ public class UserController {
 		if (result.hasErrors()) {
 			return this.validar(result);
 		} else {
-			User user1 = new User();
-			user1.setUsername(user.getUserName());
-			user1.setPassword(user.getPassword());
+			User user1 = UserMapper.INSTANCE.user(user);
 			return ResponseEntity.ok().body(service.createUser(user1));
 		}
 	}

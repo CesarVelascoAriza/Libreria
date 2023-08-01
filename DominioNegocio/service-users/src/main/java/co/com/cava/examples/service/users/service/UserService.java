@@ -2,7 +2,7 @@ package co.com.cava.examples.service.users.service;
 
 import java.util.Optional;
 
-import co.com.cava.examples.service.users.entity.User;
+import com.example.commons.users.entitis.User;
 
 public interface UserService {
 
