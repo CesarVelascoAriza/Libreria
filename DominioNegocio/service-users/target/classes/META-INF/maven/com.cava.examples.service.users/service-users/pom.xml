@@ -9,7 +9,10 @@
 	</parent>
 	<groupId>com.cava.examples.service.users</groupId>
 	<artifactId>service-users</artifactId>
-
+	<properties>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>com.example.commons.users</groupId>

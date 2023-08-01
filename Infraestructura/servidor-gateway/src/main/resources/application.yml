@@ -1,3 +1,11 @@
+server:
+  port: 8762
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 spring:
   application:
     name: servidor-gateway
@@ -10,11 +18,25 @@ spring:
             - Path=/api/users/**
           filters:
             - StripPrefix=2
-server:
-  port: 8762
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
-  instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+        - id: server-autorization
+          uri: lb://server-autorization
+          predicates:
+            - Path=/api/security/**
+          filters:
+            - StripPrefix=2
+  security:
+    oauth2:
+      client:
+        provider:
+          spring:
+            issuer-uri: http://localhost:9000/
+        registration:
+          client:
+            provider: spring
+            client-id: libreria
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:9000/login/oauth2/code/${registrationId}
+            scope: profile,openid
+            client-name: login spring provider
+            client-authentication-method: client_secret_basic
