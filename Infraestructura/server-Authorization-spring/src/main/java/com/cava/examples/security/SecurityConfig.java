@@ -85,7 +85,7 @@ public class SecurityConfig {
 	public UserDetailsService userDetailsService() {
 		UserDetails userDetails = User.withDefaultPasswordEncoder()
 				.username("user")
-				.password("password")
+				.password("password").authorities("read").authorities("write")
 				.roles("USER")
 				.build();
 
@@ -100,7 +100,7 @@ public class SecurityConfig {
 				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
 				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-				.redirectUri("http://localhost:9000/login/oauth2/code/libreria")
+				.redirectUri("http://localhost:8762/login/oauth2/code/libreria")
 				.postLogoutRedirectUri("http://localhost:9000/")
 				.scope(OidcScopes.OPENID)
 				.scope(OidcScopes.PROFILE)
