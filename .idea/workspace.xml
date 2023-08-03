@@ -4,7 +4,42 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d0dfbbe-3f72-462d-a29f-ee495abe5a4b" name="Changes" comment="se realiza el cambios y los mapeos para que funcione con los clientes que hay en la base de datos no se enlaza con" />
+    <list default="true" id="1d0dfbbe-3f72-462d-a29f-ee495abe5a4b" name="Changes" comment="se realiza el cambios y los mapeos para que funcione con los clientes que hay en la base de datos no se enlaza con">
+      <change afterPath="$PROJECT_DIR$/DominioNegocio/commons-users/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DominioNegocio/commons-users/src/main/java/com/cava/examples/commons/users/dto/RoleDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DominioNegocio/commons-users/src/main/java/com/cava/examples/commons/users/dto/UserDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DominioNegocio/commons-users/src/main/java/com/cava/examples/commons/users/models/Role.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DominioNegocio/commons-users/src/main/java/com/cava/examples/commons/users/models/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DominioNegocio/service-users/src/main/java/co/com/cava/examples/service/users/exceptions/ExeptionError.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DominioNegocio/service-users/src/main/resources/import.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DominioNegocio/commons-users/target/classes/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DominioNegocio/commons-users/target/classes/com/example/commons/users/CommonsUsersApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DominioNegocio/commons-users/target/classes/com/example/commons/users/entitis/Rol.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DominioNegocio/commons-users/target/classes/com/example/commons/users/entitis/User.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DominioNegocio/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/DominioNegocio/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DominioNegocio/service-users/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/DominioNegocio/service-users/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DominioNegocio/service-users/src/main/java/co/com/cava/examples/service/users/ServicioUsersApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/DominioNegocio/service-users/src/main/java/co/com/cava/examples/service/users/ServicioUsersApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DominioNegocio/service-users/src/main/java/co/com/cava/examples/service/users/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/DominioNegocio/service-users/src/main/java/co/com/cava/examples/service/users/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DominioNegocio/service-users/src/main/java/co/com/cava/examples/service/users/dto/UserDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DominioNegocio/service-users/src/main/java/co/com/cava/examples/service/users/entity/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DominioNegocio/service-users/src/main/java/co/com/cava/examples/service/users/repository/UserRespository.java" beforeDir="false" afterPath="$PROJECT_DIR$/DominioNegocio/service-users/src/main/java/co/com/cava/examples/service/users/repository/UserRespository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DominioNegocio/service-users/src/main/java/co/com/cava/examples/service/users/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/DominioNegocio/service-users/src/main/java/co/com/cava/examples/service/users/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DominioNegocio/service-users/src/main/java/co/com/cava/examples/service/users/service/UserServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/DominioNegocio/service-users/src/main/java/co/com/cava/examples/service/users/service/UserServiceImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DominioNegocio/service-users/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/DominioNegocio/service-users/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DominioNegocio/service-users/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/DominioNegocio/service-users/target/classes/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DominioNegocio/service-users/target/classes/co/com/cava/examples/service/users/ServicioUsersApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/DominioNegocio/service-users/target/classes/co/com/cava/examples/service/users/ServicioUsersApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DominioNegocio/service-users/target/classes/co/com/cava/examples/service/users/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/DominioNegocio/service-users/target/classes/co/com/cava/examples/service/users/controller/UserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DominioNegocio/service-users/target/classes/co/com/cava/examples/service/users/dto/UserDTO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DominioNegocio/service-users/target/classes/co/com/cava/examples/service/users/entity/User.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DominioNegocio/service-users/target/classes/co/com/cava/examples/service/users/repository/UserRespository.class" beforeDir="false" afterPath="$PROJECT_DIR$/DominioNegocio/service-users/target/classes/co/com/cava/examples/service/users/repository/UserRespository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DominioNegocio/service-users/target/classes/co/com/cava/examples/service/users/service/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/DominioNegocio/service-users/target/classes/co/com/cava/examples/service/users/service/UserService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DominioNegocio/service-users/target/classes/co/com/cava/examples/service/users/service/UserServiceImp.class" beforeDir="false" afterPath="$PROJECT_DIR$/DominioNegocio/service-users/target/classes/co/com/cava/examples/service/users/service/UserServiceImp.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Infraestructura/servidor-gateway/target/classes/com/cava/examples/servidor/gateway/AppGateway.class" beforeDir="false" afterPath="$PROJECT_DIR$/Infraestructura/servidor-gateway/target/classes/com/cava/examples/servidor/gateway/AppGateway.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -27,7 +62,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="seguridad-implement-auth" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -62,41 +97,51 @@
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": -1
+}]]></component>
   <component name="ProjectId" id="2T2muagecyEtLNSQL3uVYwUTChV" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;openjdk-20&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/cesar/IdeaProjects/Libreria/DominioNegocio/service-oaut-server/src/main/java/com/cava/examples/service&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "usuarios",
+    "jdk.selected.JAVA_MODULE": "openjdk-20",
+    "last_opened_file_path": "/home/cesar/IdeaProjects/Libreria/DominioNegocio",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.cava.examples.service.oauth.security" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/DominioNegocio" />
       <recent name="$PROJECT_DIR$/DominioNegocio/service-oaut-server/src/main/java/com/cava/examples/service" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.cava.examples.clientUser" />
     </key>
   </component>
-  <component name="RunManager">
-    <configuration name="AdminServerApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.cava.examples.admin.server.AdminServerApplication" />
-      <module name="AdminServer" />
+  <component name="RunManager" selected="Application.ServicioUsersApplication">
+    <configuration name="AppGateway" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.cava.examples.service.oauth.servidor.gateway.AppGateway" />
+      <module name="servidor-gateway" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.cava.examples.admin.server.*" />
+          <option name="PATTERN" value="com.cava.examples.service.oauth.servidor.gateway.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -104,12 +149,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="AppGateway" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.cava.examples.service.oauth.servidor.gateway.AppGateway" />
-      <module name="servidor-gateway" />
+    <configuration name="EurekaServerApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="co.cava.examples.eureka.server.EurekaServerApplication" />
+      <module name="eureka-server" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.cava.examples.service.oauth.servidor.gateway.*" />
+          <option name="PATTERN" value="co.cava.examples.eureka.server.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -130,19 +175,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ServiceOauthApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.cava.examples.service.oauth.ServiceOauthApplication" />
-      <module name="service-oauth" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.cava.examples.service.oauth.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="ServicioUsersApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="co.com.cava.examples.service.users.ServicioUsersApplication" />
       <module name="service-users" />
@@ -156,13 +188,26 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="com.cava.examples.servidor.gateway.AppGateway" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.cava.examples.servidor.gateway.AppGateway" />
+      <module name="servidor-gateway" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.cava.examples.servidor.gateway.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.ServicioUsersApplication" />
+        <item itemvalue="Application.com.cava.examples.servidor.gateway.AppGateway" />
+        <item itemvalue="Application.EurekaServerApplication" />
         <item itemvalue="Application.ServerOauthServer" />
         <item itemvalue="Application.AppGateway" />
-        <item itemvalue="Application.ServiceOauthApplication" />
-        <item itemvalue="Application.ServicioUsersApplication" />
-        <item itemvalue="Application.AdminServerApplication" />
       </list>
     </recent_temporary>
   </component>
@@ -274,6 +319,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="se realiza el cambio para la vuena vista" />
     <MESSAGE value="se cambia la implementacion de la busqueda por user name" />
     <MESSAGE value="add securyty probablity" />

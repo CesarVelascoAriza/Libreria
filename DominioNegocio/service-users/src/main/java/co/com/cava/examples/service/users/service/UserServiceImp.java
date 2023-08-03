@@ -2,10 +2,11 @@ package co.com.cava.examples.service.users.service;
 
 import java.util.Optional;
 
+import com.cava.examples.commons.users.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import co.com.cava.examples.service.users.entity.User;
+
 import co.com.cava.examples.service.users.repository.UserRespository;
 
 @Service
@@ -32,9 +33,10 @@ public class UserServiceImp implements UserService {
 	@Override
 	public User updateUser(User user) {
 		return userRespository.findById(user.getId()).map(m -> {
-			m.setUsername(user.getUsername());
+			m.setUserName(user.getUserName());
 			m.setPassword(user.getPassword());
-			return m;
+			m.setRoles(user.getRoles());
+			return userRespository.save(m);
 		}).orElseThrow();
 	}
 
@@ -45,7 +47,7 @@ public class UserServiceImp implements UserService {
 
 	@Override
 	public Optional<User> findByName(String userName) {
-		return userRespository.findByUsername(userName);
+		return userRespository.findByUserName(userName);
 	}
 
 }

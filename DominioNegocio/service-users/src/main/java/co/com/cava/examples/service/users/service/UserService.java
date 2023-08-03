@@ -1,8 +1,10 @@
 package co.com.cava.examples.service.users.service;
 
+import com.cava.examples.commons.users.models.User;
+
 import java.util.Optional;
 
-import co.com.cava.examples.service.users.entity.User;
+
 
 public interface UserService {
 

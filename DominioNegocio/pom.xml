@@ -70,5 +70,6 @@
 	
   <modules>
   	<module>service-users</module>
+	  <module>commons-users</module>
   </modules>
 </project>

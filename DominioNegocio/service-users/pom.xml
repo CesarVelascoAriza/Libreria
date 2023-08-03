@@ -7,4 +7,13 @@
   </parent>
   <groupId>com.cava.examples.service.users</groupId>
   <artifactId>service-users</artifactId>
+
+
+  <dependencies>
+    <dependency>
+      <groupId>com.cava.examples.commons.users</groupId>
+      <artifactId>commons-users</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
 </project>
