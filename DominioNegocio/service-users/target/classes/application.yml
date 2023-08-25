@@ -1,19 +1,0 @@
-spring:
-  application:
-    name: service-users  datasource:    url: jdbc:mysql://192.168.31.129:3306/db1 #jdb de la localizacion de la base de datos
-    username: java
-    password: Adm1n@2021p@sw
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL57Dialect
-   
-server:  port: ${PORT:0} #Puerto dinamico
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka  instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}} #dejar la instancia de forma dinamica donde se toma el nombre de el servicio y el puerto
