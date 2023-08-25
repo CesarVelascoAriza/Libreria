@@ -76,5 +76,6 @@
   	<module>service-users</module>
   	
   	<module>commons-users</module>
+  	<module>service-books</module>
   </modules>
 </project>
