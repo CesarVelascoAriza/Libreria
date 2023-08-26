@@ -5,8 +5,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,6 +13,7 @@ import lombok.Data;
 @Table(name = "Libros")
 @Data
 @AllArgsConstructor
+
 public class Book implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -26,7 +25,7 @@ public class Book implements Serializable {
 	private Date datePublication;
 	private BigDecimal price;
 
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "categoria_id")
 	private Categoria categoria;
 	@Temporal(TemporalType.TIMESTAMP)
