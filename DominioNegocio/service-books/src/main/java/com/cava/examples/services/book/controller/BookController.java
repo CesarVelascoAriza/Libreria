@@ -26,10 +26,12 @@ public class BookController {
 
 	@GetMapping
 	public ResponseEntity<?> getAllBooks(){
-		List<Book> lisBooks = (List<Book>) bookService.findAll();
+		/*List<Book> lisBooks = (List<Book>) bookService.findAll();
 		if(lisBooks.isEmpty())
 			return ResponseEntity.noContent().build();
-		return ResponseEntity.ok().body(lisBooks);
+		*/
+		return ResponseEntity.ok().body(bookService.findAll());
+
 	}
 	
 	@GetMapping("/searchname")

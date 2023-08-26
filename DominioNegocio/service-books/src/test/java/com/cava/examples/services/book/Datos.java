@@ -23,4 +23,7 @@ public class Datos {
 	public static Optional<Book> boock(){
 		return Optional.of(new Book(1L, "Como programar en java", "java programing", new Date(), new BigDecimal("90000") , categoria().get()));
 	}
+	public static Optional<Book> bookEmty(){
+		return Optional.empty();
+	}
 }

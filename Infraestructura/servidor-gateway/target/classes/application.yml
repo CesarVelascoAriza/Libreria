@@ -18,4 +18,9 @@ spring:
             - Path=/api/users/**
           filters:
             - StripPrefix=2
-
+        - id: service-books
+          uri: lb://service-books
+          predicates:
+            - Path=/api/libros/**
+          filters:
+            - StripPrefix=2

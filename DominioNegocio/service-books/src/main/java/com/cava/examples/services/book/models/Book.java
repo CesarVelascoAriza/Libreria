@@ -1,24 +1,13 @@
 package com.cava.examples.services.book.models;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -26,8 +15,8 @@ import lombok.Data;
 @Table(name = "Libros")
 @Data
 @AllArgsConstructor
-public class Book {
-	
+public class Book implements Serializable {
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long isbn;
@@ -36,15 +25,16 @@ public class Book {
 	@Temporal(TemporalType.DATE)
 	private Date datePublication;
 	private BigDecimal price;
-	@Lob
-	@JsonIgnore
-	private byte[] image;
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	@JoinColumn(name = "categoria_id")
 	private Categoria categoria;
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "create_at")
 	private Date createAt;
+	@Lob
+	@JsonIgnore
+	private byte[] image;
 	@PrePersist
 	public void prePersist() {
 		createAt = new Date();
@@ -53,8 +43,6 @@ public class Book {
 	public Book() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	
 	public Book(Long isbn, String title, String subTitle, Date datePublication, BigDecimal price, 
 			Categoria categoria) {
 		super();
@@ -130,16 +118,7 @@ public class Book {
 		this.createAt = createAt;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
-		return super.equals(obj);
-	}@Override
-	public int hashCode() {
-		// TODO Auto-generated method stub
-		return super.hashCode();
-	}
-	public Integer getIamgenHasCode() {
+	public Integer getImageHasCode() {
 		return (this.image != null ) ? image.hashCode():null;
 	}
 }
