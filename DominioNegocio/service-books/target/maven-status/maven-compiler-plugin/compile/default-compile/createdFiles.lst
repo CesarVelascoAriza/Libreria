@@ -1,7 +1,7 @@
-com\cava\examples\services\book\models\Categoria.class
-com\cava\examples\services\book\controller\BookController.class
-com\cava\examples\services\book\models\Book.class
-com\cava\examples\services\book\service\BookServiceImp.class
-com\cava\examples\services\book\SpringApplicationBook.class
-com\cava\examples\services\book\repostory\LibroRepository.class
-com\cava\examples\services\book\service\BookService.class
+com/cava/examples/services/book/models/Categoria.class
+com/cava/examples/services/book/controller/BookController.class
+com/cava/examples/services/book/service/BookService.class
+com/cava/examples/services/book/models/Book.class
+com/cava/examples/services/book/service/BookServiceImp.class
+com/cava/examples/services/book/SpringApplicationBook.class
+com/cava/examples/services/book/repostory/LibroRepository.class

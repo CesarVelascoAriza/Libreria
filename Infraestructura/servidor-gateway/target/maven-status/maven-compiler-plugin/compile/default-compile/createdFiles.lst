@@ -1,4 +1,1 @@
-com\cava\examples\servidor\gateway\security\JwtAuthenticationFilter.class
-com\cava\examples\servidor\gateway\security\AuthenticationManagerJwt.class
-com\cava\examples\servidor\gateway\security\SpringSecurityConfig.class
-com\cava\examples\servidor\gateway\AppGateway.class
+com/cava/examples/servidor/gateway/AppGateway.class

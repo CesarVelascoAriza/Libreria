@@ -14,7 +14,6 @@
   </properties>
   <modules>
   	<module>servidor-gateway</module>
-  	
   	<module>eureka-server</module>
   	<module>AdminServer</module>
   	

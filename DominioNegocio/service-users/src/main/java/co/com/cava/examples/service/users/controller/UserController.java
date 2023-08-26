@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.commons.users.entitis.User;
 
 import co.com.cava.examples.service.users.dto.UserDTO;
-import co.com.cava.examples.service.users.mappers.UserMapper;
+
 import co.com.cava.examples.service.users.service.UserService;
 import jakarta.validation.Valid;
 
@@ -48,12 +48,12 @@ public class UserController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> saveUser(@Valid @RequestBody UserDTO user, BindingResult result) {
+	public ResponseEntity<?> saveUser(@Valid @RequestBody User user, BindingResult result) {
 		if (result.hasErrors()) {
 			return this.validar(result);
 		} else {
-			User user1 = UserMapper.INSTANCE.user(user);
-			return ResponseEntity.ok().body(service.createUser(user1));
+
+			return ResponseEntity.ok().body(service.createUser(user));
 		}
 	}
 

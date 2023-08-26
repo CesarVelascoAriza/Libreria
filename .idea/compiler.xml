@@ -8,9 +8,23 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="servidor-gateway" />
+        <module name="service-books" />
+        <module name="commons-users" />
         <module name="eureka-server" />
+        <module name="AdminServer" />
         <module name="service-users" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="commons-errors" target="20" />
+      <module name="commons-moduls" target="20" />
+      <module name="security" target="20" />
+      <module name="service-oauth" target="20" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="commons-users" options="-parameters" />
+    </option>
   </component>
 </project>
