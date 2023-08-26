@@ -17,7 +17,7 @@
   	
   	<module>eureka-server</module>
   	<module>AdminServer</module>
-  	<module>server-Authorization-spring</module>
+  	
   </modules>
   <dependencyManagement>
   	<dependencies>

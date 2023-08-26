@@ -1,12 +1,13 @@
 package co.com.cava.examples.service.users.service;
 
-import co.com.cava.examples.service.users.entity.User;
-import co.com.cava.examples.service.users.repository.UserRespository;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.example.commons.users.entitis.User;
+
+import co.com.cava.examples.service.users.repository.UserRespository;
 
 @Service
 public class UserServiceImp implements UserService {
@@ -31,8 +32,10 @@ public class UserServiceImp implements UserService {
     @Override
     public User updateUser(User user) {
         return userRespository.findById(user.getId()).map(m->{
-          m.setUsername(user.getUsername());
+          m.setUserName(user.getUserName());
           m.setPassword(user.getPassword());
+          m.setRoles(user.getRoles());
+          
           return  m;
         }).orElseThrow();
     }
@@ -44,6 +47,6 @@ public class UserServiceImp implements UserService {
 
     @Override
     public Optional<User> findByName(String userName) {
-        return userRespository.findByUsername(userName);
+        return userRespository.findByUserName(userName);
     }
 }
