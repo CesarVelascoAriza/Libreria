@@ -18,25 +18,4 @@ spring:
             - Path=/api/users/**
           filters:
             - StripPrefix=2
-        - id: server-autorization
-          uri: lb://server-autorization
-          predicates:
-            - Path=/api/security/**
-          filters:
-            - StripPrefix=2
-  security:
-    oauth2:
-      client:
-        provider:
-          spring:
-            issuer-uri: http://localhost:9000
-        registration:
-          client:
-            provider: spring
-            client-id: libreria
-            client-secret: secret
-            authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:8762/login/oauth2/code/libreria
-            scope: profile,openid
-            client-name: login spring provider
-            client-authentication-method: client_secret_basic
+

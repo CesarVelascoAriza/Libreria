@@ -1,9 +1,8 @@
 package co.com.cava.examples.service.users.service;
 
-import co.com.cava.examples.service.users.entity.User;
-
-import java.util.List;
 import java.util.Optional;
+
+import com.example.commons.users.entitis.User;
 
 public interface UserService {
 
