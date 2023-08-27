@@ -1,0 +1,10 @@
+/home/cesar/IdeaProjects/Libreria/DominioNegocio/service-books/src/main/java/com/cava/examples/services/book/modelError/ModelError.java
+/home/cesar/IdeaProjects/Libreria/DominioNegocio/service-books/src/main/java/com/cava/examples/services/book/controller/BookController.java
+/home/cesar/IdeaProjects/Libreria/DominioNegocio/service-books/src/main/java/com/cava/examples/services/book/models/Book.java
+/home/cesar/IdeaProjects/Libreria/DominioNegocio/service-books/src/main/java/com/cava/examples/services/book/SpringApplicationBook.java
+/home/cesar/IdeaProjects/Libreria/DominioNegocio/service-books/src/main/java/com/cava/examples/services/book/service/BookService.java
+/home/cesar/IdeaProjects/Libreria/DominioNegocio/service-books/src/main/java/com/cava/examples/services/book/service/BookServiceImp.java
+/home/cesar/IdeaProjects/Libreria/DominioNegocio/service-books/src/main/java/com/cava/examples/services/book/models/Categoria.java
+/home/cesar/IdeaProjects/Libreria/DominioNegocio/service-books/src/main/java/com/cava/examples/services/book/repostory/LibroRepository.java
+/home/cesar/IdeaProjects/Libreria/DominioNegocio/service-books/src/main/java/com/cava/examples/services/book/modelError/Error.java
+/home/cesar/IdeaProjects/Libreria/DominioNegocio/service-books/src/main/java/com/cava/examples/services/book/exception/ApiExceptionHandler.java

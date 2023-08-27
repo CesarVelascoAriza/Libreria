@@ -61,7 +61,7 @@ public class BookController {
 			return b;
 		}).orElseThrow();
 		
-		return ResponseEntity.status(HttpStatus.CREATED).body(bookService.save(bookOptinal.get()));
+		return ResponseEntity.status(HttpStatus.OK).body(bookService.save(bookOptinal.get()));
 	}
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteById(@PathVariable Long id){
