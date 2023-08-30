@@ -1,7 +1,0 @@
-/home/cesar/IdeaProjects/Libreria/DominioNegocio/service-users/src/main/java/co/com/cava/examples/service/users/service/UserService.java
-/home/cesar/IdeaProjects/Libreria/DominioNegocio/service-users/src/main/java/co/com/cava/examples/service/users/repository/UserRespository.java
-/home/cesar/IdeaProjects/Libreria/DominioNegocio/service-users/src/main/java/co/com/cava/examples/service/users/ServicioUsersApplication.java
-/home/cesar/IdeaProjects/Libreria/DominioNegocio/service-users/src/main/java/co/com/cava/examples/service/users/exception/HandleException.java
-/home/cesar/IdeaProjects/Libreria/DominioNegocio/service-users/src/main/java/co/com/cava/examples/service/users/service/UserServiceImp.java
-/home/cesar/IdeaProjects/Libreria/DominioNegocio/service-users/src/main/java/co/com/cava/examples/service/users/controller/UserController.java
-/home/cesar/IdeaProjects/Libreria/DominioNegocio/service-users/src/main/java/co/com/cava/examples/service/users/dto/UserDTO.java
