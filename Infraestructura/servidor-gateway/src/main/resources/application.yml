@@ -24,3 +24,14 @@ spring:
             - Path=/api/libros/**
           filters:
             - StripPrefix=2
+        - id: service-autorization-server
+          uri: lb://service-oauth2-autorization-server
+          predicates:
+            - Path=/api/security/**
+          filters:
+            - StripPrefix=2
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:9000/oauth2/jwks

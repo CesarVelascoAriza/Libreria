@@ -95,5 +95,6 @@
 	<modules>
 		<module>Infraestructura</module>
 		<module>DominioNegocio</module>
+		<module>Seguridad</module>
 	</modules>
 </project>
