@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.commons.users.entitis.User;
 
-import co.com.cava.examples.service.users.dto.UserDTO;
-
 import co.com.cava.examples.service.users.service.UserService;
 import jakarta.validation.Valid;
 
