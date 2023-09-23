@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  eureka-server:
+  	build: "Seguridad/Autorization-server/."
+  	image: servidor-eureka
+  	ports:
+      - "8761:8761"
+    environment:
+       - JAVA_OPTS=
+         -Xms256M 
+         -Xmx256M
