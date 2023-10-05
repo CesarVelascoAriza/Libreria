@@ -2,15 +2,13 @@ package co.com.cava.examples.service.users.service;
 
 import java.util.Optional;
 
-import com.example.commons.users.entitis.User;
+import com.cava.examples.common.entitis.Usuario;
+import com.cava.examples.service.CommonService;
 
-public interface UserService {
 
-    Iterable<User> listUsers();
-    Optional<User> findUserById(Long id);
-    User createUser(User user);
-    User updateUser(User user);
-    void deleteUser(long id);
-    Optional<User> findByName(String userName);
+public interface UserService extends CommonService<Usuario> {
+
+
+    Optional<Usuario> findByName(String userName);
 }
 

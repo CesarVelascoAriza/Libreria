@@ -1,28 +1,33 @@
-*.project
-*.prefs
+DominioNegocio/service-books/HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+**/nb-configuration.xml
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
 
-DominioNegocio/service-users/.classpath
+### IntelliJ IDEA ###
+*.idea/**
+*.iws
+*.iml
+*.ipr
 
-DominioNegocio/service-users/.factorypath
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-DominioNegocio/service-users/target/classes/META-INF/MANIFEST.MF
-
-Infraestructura/servidor-gateway/target/classes/META-INF/MANIFEST.MF
-
-Infraestructura/servidor-gateway/.classpath
-
-Infraestructura/servidor-gateway/.factorypath
-
-Infraestructura/servidor-gateway/.project
-
-DominioNegocio/service-users/.project
-
-Infraestructura/AdminServer/target/classes/META-INF/
-
-Infraestructura/AdminServer/.classpath
-
-Infraestructura/AdminServer/.factorypath
-
-Infraestructura/AdminServer/.project
-
-DominioNegocio/service-books/.classpath
+### VS Code ###
+.vscode/

@@ -7,24 +7,39 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="servidor-gateway" />
+        <module name="commons-service" />
         <module name="service-books" />
-        <module name="commons-users" />
+        <module name="commons-usuarios" />
+        <module name="Seguridad (1) (com.cava.examples.security)" />
+        <module name="admin-server" />
         <module name="eureka-server" />
-        <module name="AdminServer" />
+        <module name="common-libros" />
+        <module name="getway-server" />
         <module name="service-users" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="AdminServer" target="17" />
+      <module name="Autorization-server" target="17" />
       <module name="commons-errors" target="20" />
       <module name="commons-moduls" target="20" />
+      <module name="commons-service.main" target="17" />
+      <module name="commons-service.test" target="17" />
+      <module name="commons-users" target="17" />
       <module name="security" target="20" />
+      <module name="Seguridad" target="17" />
       <module name="service-oauth" target="20" />
+      <module name="servidor-gateway" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="admin-server" options="" />
       <module name="commons-users" options="-parameters" />
+      <module name="eureka-server" options="" />
+      <module name="getway-server" options="" />
+      <module name="service-books" options="" />
+      <module name="service-users" options="" />
     </option>
   </component>
 </project>

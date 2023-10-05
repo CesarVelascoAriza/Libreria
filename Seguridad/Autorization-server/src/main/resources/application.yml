@@ -1,5 +1,5 @@
 server:
-  port: ${PORT:0} #Puerto dinamico
+  port: ${PORT:9000} #Puerto dinamico
 eureka:
   client:
     service-url:

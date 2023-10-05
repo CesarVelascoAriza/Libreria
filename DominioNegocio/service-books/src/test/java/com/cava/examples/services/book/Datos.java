@@ -1,13 +1,14 @@
 package com.cava.examples.services.book;
 
+import com.cava.examples.common.entitis.Book;
+import com.cava.examples.common.entitis.Categoria;
+
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Optional;
 import java.util.Set;
 
-import com.cava.examples.services.book.models.Book;
-import com.cava.examples.services.book.models.Categoria;
 
 public class Datos {
 	

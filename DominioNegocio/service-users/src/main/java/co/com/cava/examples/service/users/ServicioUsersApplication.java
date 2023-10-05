@@ -8,7 +8,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EntityScan({
-	"com.example.commons.users.entitis"
+	"com.cava.examples.common.entitis"
 })
 public class ServicioUsersApplication {
 
