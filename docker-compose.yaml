@@ -1,0 +1,86 @@
+version: "3.8"
+services:
+  servidor-eureka:
+    build: Infraestructura/eureka-server/.
+    image: servidor-eureka
+    ports:
+      - 8761:8761
+    environment:
+      - JAVA_OPTS=
+        -Xms256M
+        -Xms256M
+  servidor-gateways:
+    build: Infraestructura/getway-server/.
+    image: servidor-gateway
+    ports:
+      - 8762:8762
+    environment:
+      - JAVA_OPTS=
+        -Xms256M
+        -Xms256M
+        -DEUREKA-SERVER=http://servidor-eureka:8761/eureka
+        -DPORT=8767
+    depends_on:
+      - servidor-eureka
+  servidor-admin:
+    build: Infraestructura/admin-server/.
+    image: servidor-admin
+    ports:
+      - 8763:8763
+    environment:
+      - JAVA_OPTS=
+        -Xms256M
+        -Xms256M
+        -DEUREKA_SERVER=http://servidor-eureka:8761/eureka
+        -DPORT=8763
+    depends_on:
+      - servidor-eureka
+      - servidor-gateways
+  service-auth:
+    build: Seguridad/Autorization-server/.
+    image: servidor-authorization
+    ports:
+      - 9000:9000
+    environment:
+      - JAVA_OPTS=
+        -Xms256M
+        -Xms256M
+        -DEUREKA-SERVER=http://servidor-eureka:8761/eureka
+        -DPORT=9000
+    depends_on:
+      - servidor-eureka
+      - servidor-gateways
+      - servidor-admin
+  service-usuarios:
+    build: DominioNegocio/service-users/.
+    image: servidor-authorization
+    ports:
+      - 4000:4000
+    environment:
+      - JAVA_OPTS=
+        -Xms256M
+        -Xms256M
+        -DEUREKA-SERVER=http://servidor-eureka:8761/eureka
+        -DPORT=4000
+    depends_on:
+      - servidor-eureka
+      - servidor-gateways
+      - servidor-admin
+      - service-auth
+  service-libros:
+    build: DominioNegocio/service-books/.
+    image: servicio-libros
+    ports:
+      - 4001:4001
+    environment:
+      - JAVA_OPTS=
+        -Xms256M
+        -Xms256M
+        -DEUREKA-SERVER=http://servidor-eureka:8761/eureka
+        -DPORT=4001
+    depends_on:
+      - servidor-eureka
+      - servidor-gateways
+      - servidor-admin
+      - service-auth
+      - service-usuarios

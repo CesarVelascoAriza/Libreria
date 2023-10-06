@@ -11,7 +11,6 @@ import co.com.cava.examples.service.users.repository.UserRespository;
 @Service
 public class UserServiceImp extends CommonServiceImp<Usuario,UserRespository> implements UserService {
 
-
     @Override
     public Optional<Usuario> findByName(String userName) {
         return repository.findByUserName(userName);

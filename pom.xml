@@ -59,7 +59,7 @@
                     <useSystemClassLoader>false</useSystemClassLoader>
                 </configuration>
             </plugin>
-            <plugin>
+           <!-- <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
@@ -67,16 +67,35 @@
                     <target>17</target>
                     <source>17</source>
                 </configuration>
-            </plugin>
+            </plugin>-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
+                        </exclude>
+                        <exclude>
+                            <groupId>com.cava.examples.common.entitis</groupId>
+                            <artifactId>commons-usuarios</artifactId>
+                        </exclude>
+                        <exclude>
+                            <groupId>com.cava.examples.common.entitis</groupId>
+                            <artifactId>commons-service</artifactId>
+                        </exclude>
+                        <exclude>
+                            <groupId>com.cava.examples.common.entitis</groupId>
+                            <artifactId>commons-libros</artifactId>
                         </exclude>
                     </excludes>
                 </configuration>
