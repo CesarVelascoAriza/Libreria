@@ -6,6 +6,8 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
 
+import com.cava.examples.security.Seguridad.service.UsuarioService;
+import com.cava.examples.security.Seguridad.service.impl.UsuarioServiceImp;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -40,7 +42,7 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class ServerAutirizationConfigBasic {
     @Bean
     @Order(1)
@@ -90,11 +92,17 @@ public class ServerAutirizationConfigBasic {
 
 	}*/
 
+
+    @Bean
+    public  BCryptPasswordEncoder passwordEncoder(){
+        return  new BCryptPasswordEncoder();
+    }
+
     @Bean
     public RegisteredClientRepository registeredClientRepository() {
         RegisteredClient oidcClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("oidc-client")
-                .clientSecret("{noop}secret")
+                .clientSecret("$2a$10$GTdrNpBGt6JtqptP2Tn8BuIgJgET9fDEKY3ntjWbH6F360LMMPX9y")
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_JWT)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
