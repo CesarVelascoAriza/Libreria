@@ -115,7 +115,7 @@ public class ServerAutirizationConfigBasic {
                 .scope(OidcScopes.PROFILE)
                 .scope("read")
                 .scope("write")
-                .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
+                .clientSettings(ClientSettings.builder().requireAuthorizationConsent(false).build())
                 .build();
 
         return new InMemoryRegisteredClientRepository(oidcClient);
