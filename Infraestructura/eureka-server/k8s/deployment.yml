@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eureka-server
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      bb: eureka
+  template:
+    metadata:
+      labels:
+        bb: eureka
+    spec:
+      containers:
+        - name: eureka-server
+          image: eureka-server:1 #se toma la imagen de docker
+          imagePullPolicy: Never #esta opcion le dice que la imagen no se necesita bajar 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eureka-server
+  namespace: default
+spec:
+  type: NodePort
+  selector:
+    bb: eureka
+  ports:
+    - port: 8761
+      targetPort: 8761
+      nodePort: 30001
