@@ -4,7 +4,7 @@ metadata:
   name: eureka-server
   namespace: default
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       bb: eureka
@@ -16,7 +16,7 @@ spec:
       containers:
         - name: eureka-server
           image: eureka-server:1 #se toma la imagen de docker
-          imagePullPolicy: Never #esta opcion le dice que la imagen no se necesita bajar 
+          imagePullPolicy: Never #esta opcion le dice que la imagen no se necesita bajar
 ---
 apiVersion: v1
 kind: Service
