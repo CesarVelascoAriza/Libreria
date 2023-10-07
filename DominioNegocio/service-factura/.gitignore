@@ -1,9 +1,9 @@
-DominioNegocio/service-books/HELP.md
+HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-**/nb-configuration.xml
+
 ### STS ###
 .apt_generated
 .classpath
@@ -18,7 +18,7 @@ target/
 *.iws
 *.iml
 *.ipr
-**nb-configuration.xml
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
@@ -31,4 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
-/.idea/

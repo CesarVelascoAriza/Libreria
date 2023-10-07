@@ -9,6 +9,7 @@ import com.cava.examples.service.CommonService;
 public interface UserService extends CommonService<Usuario> {
 
 
+    Usuario updateUser(Usuario usuario);
     Optional<Usuario> findByName(String userName);
 }
 
