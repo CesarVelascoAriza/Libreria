@@ -1,51 +1,32 @@
 package co.com.cava.examples.service.users.service;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.cava.examples.common.entitis.Usuario;
+import com.cava.examples.service.impl.CommonServiceImp;
 import org.springframework.stereotype.Service;
 
-import co.com.cava.examples.service.users.entity.User;
 import co.com.cava.examples.service.users.repository.UserRespository;
 
 @Service
-public class UserServiceImp implements UserService {
+public class UserServiceImp extends CommonServiceImp<Usuario,UserRespository> implements UserService {
 
-	@Autowired
-	private UserRespository userRespository;
+    @Override
+    public Usuario updateUser(Usuario usuario) {
+       Optional<Usuario> optional = repository.findById(usuario.getId()).map(p->{
+          p.setUserName(usuario.getUserName());
+          p.setPassword(usuario.getPassword());
+          p.setRoles(usuario.getRoles());
+          p.setEnabled(usuario.isEnabled());
+          return p;
+        });
 
-	@Override
-	public Iterable<User> listUsers() {
-		return userRespository.findAll();
-	}
+        return repository.save(optional.get());
+    }
 
-	@Override
-	public Optional<User> findUserById(Long id) {
-		return userRespository.findById(id);
-	}
-
-	@Override
-	public User createUser(User user) {
-		return userRespository.save(user);
-	}
-
-	@Override
-	public User updateUser(User user) {
-		return userRespository.findById(user.getId()).map(m -> {
-			m.setUsername(user.getUsername());
-			m.setPassword(user.getPassword());
-			return m;
-		}).orElseThrow();
-	}
-
-	@Override
-	public void deleteUser(long id) {
-		userRespository.deleteById(id);
-	}
-
-	@Override
-	public Optional<User> findByName(String userName) {
-		return userRespository.findByUsername(userName);
-	}
-
+    @Override
+    public Optional<Usuario> findByName(String userName) {
+        return repository.findByUserName(userName);
+    }
 }

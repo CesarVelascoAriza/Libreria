@@ -2,12 +2,13 @@ package co.com.cava.examples.service.users.repository;
 
 import java.util.Optional;
 
+import com.cava.examples.common.entitis.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import co.com.cava.examples.service.users.entity.User;
 
-public interface UserRespository extends JpaRepository<User, Long> {
+
+public interface UserRespository extends JpaRepository<Usuario, Long> {
 	
-	Optional<User> findByUsername(String username);
+	Optional<Usuario> findByUserName(String userName);
 
 }

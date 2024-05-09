@@ -1,0 +1,37 @@
+server:
+  port: ${PORT:8762}
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA-SERVER:http://localhost:8761/eureka}
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+spring:
+  application:
+    name: servidor-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: service-users
+          uri: lb://service-users
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - StripPrefix=2
+        - id: service-books
+          uri: lb://service-books
+          predicates:
+            - Path=/api/libros/**
+          filters:
+            - StripPrefix=2
+        - id: service-autorization-server
+          uri: lb://service-oauth2-autorization-server
+          predicates:
+            - Path=/api/security/**
+          filters:
+            - StripPrefix=2
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:9000/oauth2/jwks

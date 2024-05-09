@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin-server
+  labels:
+    app: admin-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: admin-server
+  template:
+    metadata:
+      name: admin-server
+      labels:
+        app: admin-server
+    spec:
+      containers:
+        - name: admin-server
+          image: admin-server:1
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: service
+metadata:
+  name: admin-server
+  namespace: default
+spec:
+  type: NodePort
+  selector:
+    app: admin
+  ports:
+    - port: 8763
+      targetPort: 8763
+      nodePort: 30002
