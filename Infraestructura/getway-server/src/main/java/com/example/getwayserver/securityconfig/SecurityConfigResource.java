@@ -15,8 +15,10 @@ public class SecurityConfigResource {
         http
                 .authorizeExchange(authorize -> authorize
                         .pathMatchers("/api/security/**", "/actuator/**").permitAll()
+                        .pathMatchers("/api/users").hasRole("ADMIN")
                         .anyExchange().authenticated()
                 )
+                .oauth2Login(Customizer.withDefaults())
                 .oauth2ResourceServer(resource -> {
                     resource.jwt(Customizer.withDefaults());
                 })

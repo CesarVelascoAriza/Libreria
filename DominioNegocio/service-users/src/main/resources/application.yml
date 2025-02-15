@@ -2,9 +2,9 @@ spring:
   application:
     name: service-users
   datasource:
-    url: jdbc:mysql://localhost:3306/school #jdb de la localizacion de la base de datos
-    username: java
-    password: Adm1n@2021p@sw
+    url: jdbc:mysql://pr-libreria.cbqoe0s8qtp0.us-west-2.rds.amazonaws.com/libreria #jdb de la localizacion de la base de datos
+    username: libreria
+    password: pr-libreria2024
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
