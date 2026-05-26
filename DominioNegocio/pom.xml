@@ -9,9 +9,8 @@
     <artifactId>DominioNegocio</artifactId>
     <packaging>pom</packaging>
     <properties>
-        <java.version>17</java.version>
-        <spring-boot-admin.version>3.1.5</spring-boot-admin.version>
-        <spring-cloud.version>2022.0.4</spring-cloud.version>
+        <spring-boot-admin.version>3.5.9</spring-boot-admin.version>
+        <spring-cloud.version>2023.0.6</spring-cloud.version>
     </properties>
     <dependencies>
         <dependency>

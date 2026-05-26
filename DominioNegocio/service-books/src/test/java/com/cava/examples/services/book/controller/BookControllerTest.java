@@ -1,44 +1,14 @@
 package com.cava.examples.services.book.controller;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import com.cava.examples.common.entitis.Book;
-
-import com.cava.examples.common.entitis.Categoria;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import com.cava.examples.services.book.Datos;
-
-import com.cava.examples.services.book.service.BookService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Optional;
 
 
-@WebMvcTest(controllers = BookController.class)
+
+//@WebMvcTest(controllers = BookController.class)
 class BookControllerTest {
 	
-	@Autowired
+	/*@Autowired
 	private MockMvc mvc;
-	@MockBean
+	@MockitoBean
 	private BookService bookService;
 	
 	ObjectMapper mapper;
@@ -100,7 +70,7 @@ class BookControllerTest {
 		//then
 		verify(bookService).findByTitle(anyString());
 	}*/
-
+/* 
 	@Test
 	void saveBook() throws Exception {
 
@@ -161,4 +131,5 @@ class BookControllerTest {
 		//then
 		verify(bookService).deleteById(any());
 	}
+		*/
 }

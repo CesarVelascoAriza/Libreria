@@ -1,86 +1,80 @@
-version: "3.8"
 services:
   servidor-eureka:
-    build: Infraestructura/eureka-server/.
+    build: Infraestructura/eureka-server
     image: servidor-eureka
     ports:
-      - 8761:8761
+      - "8761:8761"
     environment:
-      - JAVA_OPTS=
-        -Xms256M
-        -Xms256M
-  servidor-gateways:
-    build: Infraestructura/getway-server/.
+      JAVA_OPTS: "-Xms256M -Xmx256M"
+      PORT: "8761"
+    restart: unless-stopped
+
+  servidor-gateway:
+    build: Infraestructura/getway-server
     image: servidor-gateway
     ports:
-      - 8762:8762
+      - "8762:8762"
     environment:
-      - JAVA_OPTS=
-        -Xms256M
-        -Xms256M
-        -DEUREKA-SERVER=http://servidor-eureka:8761/eureka
-        -DPORT=8767
+      JAVA_OPTS: "-Xms256M -Xmx256M"
+      PORT: "8762"
+      EUREKA_SERVER: "http://servidor-eureka:8761/eureka"
+      EUREKA-SERVER: "http://servidor-eureka:8761/eureka"
     depends_on:
       - servidor-eureka
+    restart: unless-stopped
+
   servidor-admin:
-    build: Infraestructura/admin-server/.
+    build: Infraestructura/admin-server
     image: servidor-admin
     ports:
-      - 8763:8763
+      - "8763:8763"
     environment:
-      - JAVA_OPTS=
-        -Xms256M
-        -Xms256M
-        -DEUREKA_SERVER=http://servidor-eureka:8761/eureka
-        -DPORT=8763
+      JAVA_OPTS: "-Xms256M -Xmx256M"
+      PORT: "8763"
+      EUREKA_SERVER: "http://servidor-eureka:8761/eureka"
+      EUREKA-SERVER: "http://servidor-eureka:8761/eureka"
     depends_on:
       - servidor-eureka
-      - servidor-gateways
+    restart: unless-stopped
+
   service-auth:
-    build: Seguridad/Autorization-server/.
+    build: Seguridad/Autorization-server
     image: servidor-authorization
     ports:
-      - 9000:9000
+      - "9000:9000"
     environment:
-      - JAVA_OPTS=
-        -Xms256M
-        -Xms256M
-        -DEUREKA-SERVER=http://servidor-eureka:8761/eureka
-        -DPORT=9000
+      JAVA_OPTS: "-Xms256M -Xmx256M"
+      PORT: "9000"
+      EUREKA_SERVER: "http://servidor-eureka:8761/eureka"
+      EUREKA-SERVER: "http://servidor-eureka:8761/eureka"
     depends_on:
       - servidor-eureka
-      - servidor-gateways
-      - servidor-admin
+    restart: unless-stopped
+
   service-usuarios:
-    build: DominioNegocio/service-users/.
-    image: servidor-authorization
+    build: DominioNegocio/service-users
+    image: servidor-usuarios
     ports:
-      - 4000:4000
+      - "4000:4000"
     environment:
-      - JAVA_OPTS=
-        -Xms256M
-        -Xms256M
-        -DEUREKA-SERVER=http://servidor-eureka:8761/eureka
-        -DPORT=4000
+      JAVA_OPTS: "-Xms256M -Xmx256M"
+      PORT: "4000"
+      EUREKA_SERVER: "http://servidor-eureka:8761/eureka"
+      EUREKA-SERVER: "http://servidor-eureka:8761/eureka"
     depends_on:
       - servidor-eureka
-      - servidor-gateways
-      - servidor-admin
-      - service-auth
+    restart: unless-stopped
+
   service-libros:
-    build: DominioNegocio/service-books/.
+    build: DominioNegocio/service-books
     image: servicio-libros
     ports:
-      - 4001:4001
+      - "4001:4001"
     environment:
-      - JAVA_OPTS=
-        -Xms256M
-        -Xms256M
-        -DEUREKA-SERVER=http://servidor-eureka:8761/eureka
-        -DPORT=4001
+      JAVA_OPTS: "-Xms256M -Xmx256M"
+      PORT: "4001"
+      EUREKA_SERVER: "http://servidor-eureka:8761/eureka"
+      EUREKA-SERVER: "http://servidor-eureka:8761/eureka"
     depends_on:
       - servidor-eureka
-      - servidor-gateways
-      - servidor-admin
-      - service-auth
-      - service-usuarios
+    restart: unless-stopped

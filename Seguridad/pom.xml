@@ -8,10 +8,7 @@
     </parent>
     <artifactId>Seguridad</artifactId>
     <packaging>pom</packaging>
-    <properties>
-        <spring-cloud.version>2022.0.4</spring-cloud.version>
-        <java.version>17</java.version>
-    </properties>
+    
     <dependencyManagement>
         <dependencies>
             <dependency>

@@ -12,4 +12,10 @@ public class ModelError {
 
     public ModelError() {
     }
+
+    public ModelError(int code, String message, String messageError) {
+        this.code = code;
+        this.message = message;
+        this.messageError = messageError;
+    }
 }
