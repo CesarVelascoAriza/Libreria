@@ -1,16 +1,22 @@
 services:
   servidor-eureka:
-    build: Infraestructura/eureka-server
+    build:
+      context: .
+      dockerfile: Infraestructura/eureka-server/Dockerfile
     image: servidor-eureka
     ports:
       - "8761:8761"
     environment:
       JAVA_OPTS: "-Xms256M -Xmx256M"
       PORT: "8761"
+    networks:
+      - app-network
     restart: unless-stopped
 
   servidor-gateway:
-    build: Infraestructura/getway-server
+    build:
+      context: .
+      dockerfile: Infraestructura/gateway-service/Dockerfile
     image: servidor-gateway
     ports:
       - "8762:8762"
@@ -21,10 +27,14 @@ services:
       EUREKA-SERVER: "http://servidor-eureka:8761/eureka"
     depends_on:
       - servidor-eureka
+    networks:
+      - app-network
     restart: unless-stopped
 
   servidor-admin:
-    build: Infraestructura/admin-server
+    build:
+      context: .
+      dockerfile: Infraestructura/admin-server/Dockerfile
     image: servidor-admin
     ports:
       - "8763:8763"
@@ -35,10 +45,14 @@ services:
       EUREKA-SERVER: "http://servidor-eureka:8761/eureka"
     depends_on:
       - servidor-eureka
+    networks:
+      - app-network
     restart: unless-stopped
 
   service-auth:
-    build: Seguridad/Autorization-server
+    build:
+      context: .
+      dockerfile: Seguridad/Autorization-server/Dockerfile
     image: servidor-authorization
     ports:
       - "9000:9000"
@@ -49,10 +63,14 @@ services:
       EUREKA-SERVER: "http://servidor-eureka:8761/eureka"
     depends_on:
       - servidor-eureka
+    networks:
+      - app-network
     restart: unless-stopped
 
   service-usuarios:
-    build: DominioNegocio/service-users
+    build:
+      context: .
+      dockerfile: DominioNegocio/service-users/Dockerfile
     image: servidor-usuarios
     ports:
       - "4000:4000"
@@ -61,12 +79,20 @@ services:
       PORT: "4000"
       EUREKA_SERVER: "http://servidor-eureka:8761/eureka"
       EUREKA-SERVER: "http://servidor-eureka:8761/eureka"
+      JDBC_URL: ${JDBC_URL:-jdbc:mysql://mysql-primary:3306/appdb}
+      JDBC_USERNAME: ${JDBC_USERNAME:-appuser}
+      JDBC_PASSWORD: ${JDBC_PASSWORD:-apppass}
     depends_on:
       - servidor-eureka
+      - mysql-primary
+    networks:
+      - app-network
     restart: unless-stopped
 
   service-libros:
-    build: DominioNegocio/service-books
+    build:
+      context: .
+      dockerfile: DominioNegocio/service-books/Dockerfile
     image: servicio-libros
     ports:
       - "4001:4001"
@@ -75,6 +101,55 @@ services:
       PORT: "4001"
       EUREKA_SERVER: "http://servidor-eureka:8761/eureka"
       EUREKA-SERVER: "http://servidor-eureka:8761/eureka"
+      JDBC_URL: ${JDBC_URL:-jdbc:mysql://mysql-primary:3306/appdb}
+      JDBC_USERNAME: ${JDBC_USERNAME:-appuser}
+      JDBC_PASSWORD: ${JDBC_PASSWORD:-apppass}
     depends_on:
       - servidor-eureka
+      - mysql-primary
+    networks:
+      - app-network
     restart: unless-stopped
+
+  mysql-primary:
+    image: mysql:8.0
+    container_name: mysql-primary
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: appdb
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppass
+    command: ["--default-authentication-plugin=mysql_native_password", "--server-id=1", "--log-bin=mysql-bin", "--binlog-format=ROW", "--gtid-mode=ON", "--enforce-gtid-consistency=ON"]
+    volumes:
+      - mysql-primary-data:/var/lib/mysql
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  mysql-replica:
+    image: mysql:8.0
+    container_name: mysql-replica
+    depends_on:
+      - mysql-primary
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+    command: ["--default-authentication-plugin=mysql_native_password", "--server-id=2", "--relay-log=relay-bin", "--read-only=1", "--gtid-mode=ON", "--enforce-gtid-consistency=ON"]
+    volumes:
+      - mysql-replica-data:/var/lib/mysql
+    networks:
+      - app-network
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql-primary-data:
+  mysql-replica-data:
+
+
+
+

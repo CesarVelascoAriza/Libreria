@@ -19,6 +19,17 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      JDBC_URL: ${{ secrets.JDBC_URL }}
+      JDBC_USERNAME: ${{ secrets.JDBC_USERNAME }}
+      JDBC_PASSWORD: ${{ secrets.JDBC_PASSWORD }}
+      EUREKA_SERVER: ${{ secrets.EUREKA_SERVER }}
+      MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+      MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
+      MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+      MYSQL_USER: ${{ secrets.MYSQL_USER }}
+      MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 17

@@ -8,7 +8,6 @@
         <artifactId>commons</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <groupId>com.cava.examples.common.entitis</groupId>
     <artifactId>commons-usuarios</artifactId>
     <properties>
         <spring-boot.repackage.skip>true</spring-boot.repackage.skip>

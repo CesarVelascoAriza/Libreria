@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: gateway-service
+  main:
+    web-application-type: reactive
+server:
+  port: ${PORT:8760}
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}} #dejar la instancia de forma dinamica donde se toma el nombre de el servicio y el puerto
