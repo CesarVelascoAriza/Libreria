@@ -52,7 +52,7 @@ services:
   service-auth:
     build:
       context: .
-      dockerfile: Seguridad/Autorization-server/Dockerfile
+      dockerfile: Seguridad/seguridad/Dockerfile
     image: servidor-authorization
     ports:
       - "9000:9000"
