@@ -18,6 +18,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy; 
 
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -32,8 +33,8 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
-// 🔑 IMPORT CORRECTO PARA LA ÚLTIMA VERSIÓN ESTABLE
-import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
+
+
 
 @Configuration
 @EnableWebSecurity
@@ -48,7 +49,7 @@ public class ServerAutirizationConfigBasic {
     @Bean
     @Order(1)
     public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception {
-        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+        
         
         // ⚙️ Aquí se utiliza el configurer que acabamos de importar arriba
         http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
@@ -88,7 +89,6 @@ public class ServerAutirizationConfigBasic {
                 .redirectUri("http://servidor-gateway:8762/login/oauth2/code/gateway-app")
                 .scope("read")
                 .scope("write")
-                .clientSettings(clientSettings -> clientSettings.requireProofKey(true))
                 .build();
 
         return new InMemoryRegisteredClientRepository(gatewayClient);
