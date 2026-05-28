@@ -8,10 +8,7 @@
     </parent>
     <artifactId>Seguridad</artifactId>
     <packaging>pom</packaging>
-    
-
-   
     <modules>
-        <module>Autorization-server</module>
+        <module>seguridad</module>
     </modules>
 </project>
