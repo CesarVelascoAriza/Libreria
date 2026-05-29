@@ -1,0 +1,29 @@
+server:
+  port: ${PORT:9000}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+spring:
+  application:
+    name: service-oauth2-authorization-server
+
+  # 🔐 PROPIEDAD CLAVE: El Servidor de Autorización necesita saber quién es el emisor
+  security:
+    oauth2:
+      authorizationserver:
+        issuer: http://localhost:9000 # Cambia por tu dominio/gateway en producción
+
+  cloud:
+    openfeign:
+      httpclient:
+        follow-redirects: true # 🛠️ Corregido: En YAML se usa true/false, no "on"
+      client:
+        config:
+          default: # 🛠️ Corregido: Estructura oficial de tiempos de espera en Spring Cloud
+            connectTimeout: 5000
+            readTimeout: 5000
