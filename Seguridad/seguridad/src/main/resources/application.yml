@@ -6,7 +6,7 @@ eureka:
     service-url:
       defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}
   instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}} #dejar la instancia de forma dinamica donde se toma el nombre de el servicio y el puerto
 
 spring:
   application:
@@ -17,6 +17,10 @@ spring:
     oauth2:
       authorizationserver:
         issuer: http://localhost:9000 # Cambia por tu dominio/gateway en producción
+        public-key: | # Clave pública para verificar tokens JWT
+          -----BEGIN PUBLIC KEY-----
+          MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQ...
+          -----END PUBLIC KEY-----
 
   cloud:
     openfeign:
@@ -27,3 +31,7 @@ spring:
           default: # 🛠️ Corregido: Estructura oficial de tiempos de espera en Spring Cloud
             connectTimeout: 5000
             readTimeout: 5000
+
+logging:
+  level:
+    org.springframework.security: trace

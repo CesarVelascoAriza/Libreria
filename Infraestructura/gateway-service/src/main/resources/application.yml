@@ -3,6 +3,40 @@ spring:
     name: gateway-service
   main:
     web-application-type: reactive
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Aquí va la URL base de tu Servidor de Autorización (el que configuramos a las 9000)
+          issuer-uri: http://localhost:9000
+          jwk-set-uri: http://localhost:9000/oauth2/jwks
+      client:
+        registration:
+          gateway-app:
+            client-id: gateway-app
+            client-secret: gateway-secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope:
+              - read
+              - write
+        provider:
+          gateway-app:
+            authorization-uri: http://localhost:9000/oauth2/authorize
+            token-uri: http://localhost:9000/oauth2/token
+            jwk-set-uri: http://localhost:9000/oauth2/jwks
+            user-info-uri: http://localhost:9000/userinfo
+            user-name-attribute: sub
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: service-books
+              uri: lb://service-books
+              predicates:
+                - Path=/api/books/**
+
 server:
   port: ${PORT:8760}
 eureka:
@@ -11,3 +45,4 @@ eureka:
       defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}} #dejar la instancia de forma dinamica donde se toma el nombre de el servicio y el puerto
+

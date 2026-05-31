@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
-    @Autowired
+    /*@Autowired
     private UserService service;
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -24,5 +24,5 @@ public class UserController {
         String encoderp = passwordEncoder.encode(user.getPassword());
         user.setPassword(encoderp);
         return ResponseEntity.status(HttpStatus.CREATED).body(service.saveUser(user));
-    }
+    }*/
 }

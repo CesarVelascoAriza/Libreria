@@ -17,39 +17,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImp implements UserService, UserDetailsService {
+public class UserServiceImp implements UserDetailsService {
 
     @Autowired
-    private FeingUsuario usuarioFeing;
+    private FeingUsuario feingUsuario;
 
     @Override
-    public User userinfoByName(String userName) {
-        System.out.println("por aca paso");
-        Usuario usuario = userfindByName(userName);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println(">>> Intentando buscar al usuario en la base de datos: " + username);
+
+        Usuario usuario = feingUsuario.buscarPorUserName(username);
         if(usuario == null)
-            throw new UsernameNotFoundException("Error en el login usuario no existe " + userName);
+            throw new UsernameNotFoundException("Error en el login usuario no existe " + username);
         System.out.println("por aca paso"+  usuario.getUserName());
         List<GrantedAuthority> autirities = usuario.getRoles().stream()
                 .map(roles->new SimpleGrantedAuthority(roles.getNombreRol()))
                 .collect(Collectors.toList());
 
         return  new User(usuario.getUserName(),usuario.getPassword(),usuario.isEnabled(),true,true,true,autirities);
-    }
-
-
-    public Usuario userfindByName(String userName) {
-        // TODO Auto-generated method stub
-        return usuarioFeing.buscarPorUserName(userName);
-    }
-
-    @Override
-    public Usuario saveUser(Usuario user) {
-        ResponseEntity<Usuario> usuariodb = usuarioFeing.guarUsuarioConPass(user);
-        return usuariodb.getBody();
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return (UserDetails) usuarioFeing.buscarPorUserName(username);
     }
 }

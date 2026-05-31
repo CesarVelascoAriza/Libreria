@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
-@FeignClient(name = "service-users")
+@FeignClient(name = "SERVICE-USERS")
 public interface FeingUsuario {
 
     @GetMapping("/buscar-username")

@@ -1,108 +1,31 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
-
-###
-
-### Variables Globales de Entorno
+### Variables Globales
 @authServer = http://localhost:9000
 @clientId = gateway-app
 @clientSecret = gateway-secret
-@redirectUri = http://servidor-gateway:8762/login/oauth2/code/gateway-app
+@redirectUri = http://localhost:8762/login/oauth2/code/gateway-app
 
-# El code_verifier y code_challenge corresponden al estándar PKCE obligatorio de tu configuración
-
-@codeVerifier = dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
-@codeChallenge = E9Melhoa2OwvFrGMTJguCH5wK6BFf_GI7mHaoM1v8jI
-### ------------------------------------------------------------------------
-### PASO 1: Solicitar el Código de Autorización (Simulando al usuario)
-### ------------------------------------------------------------------------
-# ⚠️ IMPORTANTE: En la pestaña "Authorization", cambia "user_db" y "secret" 
-# por las credenciales reales de un usuario que exista en tu base de datos (appdb).
-### PASO 1: Solicitar el Código de Autorización
-### PASO 1: Solicitar el Código de Autorización
-
-### PASO 1: Solicitar el Código de Autorización (En memoria)
-GET http://localhost:9000/oauth2/authorize
-    ?response_type=code
-    &client_id=gateway-app
-    &scope=read write
-    &redirect_uri=http://servidor-gateway:8762/login/oauth2/code/gateway-app
-    &code_challenge=E9Melhoa2OwvFrGMTJguCH5wK6BFf_GI7mHaoM1v8jI
-    &code_challenge_method=S256
-Authorization: Basic prueba admin123
-
-
-### ------------------------------------------------------------------------
-### PASO 2: Intercambiar el código temporal por el Token JWT
-### ------------------------------------------------------------------------
-# Toma el parámetro "?code=XXXX" del encabezado 'Location' del Paso 1, pégalo aquí y ejecuta.
-POST http://localhost:9000/oauth2/token
-Authorization: Basic gateway-app gateway-secret
-Content-Type: application/x-www-form-urlencoded
-
-grant_type=authorization_code&code=PEGA_AQUI_EL_CODIGO_DE_REDIRECCION&redirect_uri=http://servidor-gateway:8762/login/oauth2/code/gateway-app&code_verifier=dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
+### =================================================================###
+### PASO 3.1: Obtener el Código de Autorización (Simulación)
+### Nota: En un entorno real, esta URL se abre en el navegador web para 
+### que el usuario ingrese sus credenciales (como hiciste con 'prueba').
+###http://localhost:8762/login/oauth2/code/gateway-app?code=ugIicQnjvn_8GCGFpZmbrxIFrYFrTBer6uhYc10LEYCUqxuJe0qEGpDJk1-Xi9ijlItrbvnooq1ErGH19dlJ6iblnO_bUvlsKOtIizb1wv4sMcdS95nojmD8brhxNj3L
+## http://localhost:9000/oauth2/authorize?response_type=code&client_id=gateway-app&scope=read&redirect_uri=http://localhost:8762/login/oauth2/code/gateway-app
+### =================================================================###
 GET {{authServer}}/oauth2/authorize
     ?response_type=code
     &client_id={{clientId}}
-    &scope=read write
+    &scope=read
     &redirect_uri={{redirectUri}}
-    &code_challenge={{codeChallenge}}
-    &code_challenge_method=S256
-# Usa el usuario de tu BD y la contraseña en texto plano que elegiste arriba (ej: password)
-Authorization: Basic cHJ1ZWJhOnNlY3JldA==
 
-### Nota del Paso 1:
-# Cuando ejecutes esta petición, el servidor interceptará tus credenciales vía HTTP Basic,
-# validará con tu UsuarioServiceImp (vía Feign) y te devolverá un estado "302 Found".
-# En los encabezados de respuesta (Headers), busca la propiedad "Location". 
-# Copia el valor del parámetro "?code=XXXXXX" que viene en esa URL y pégalo en el Paso 2.
-
-### ------------------------------------------------------------------------
-### PASO 2: Intercambiar el código temporal por el Token JWT
-### ------------------------------------------------------------------------
-# ⚠️ Recuerda generar un código nuevo en el Paso 1 antes de pegarlo aquí
+### =================================================================###
+### PASO 3.2: Intercambiar el Código por el Token de Acceso (JWT)
+### Cuando el navegador te redirija a la URI, copia el valor del 
+### parámetro '?code=...' y reemplázalo aquí abajo.
+### =================================================================###
 POST {{authServer}}/oauth2/token
+Content-Type: application-x-www-form-urlencoded
 Authorization: Basic {{clientId}} {{clientSecret}}
-Content-Type: application/x-www-form-urlencoded
-
-grant_type=authorization_code&code=PEGA_AQUI_TU_NUEVO_CODE&redirect_uri={{redirectUri}}&code_verifier={{codeVerifier}}
-### ------------------------------------------------------------------------
-### PASO 2: Intercambiar el código temporal por el Token JWT
-### ------------------------------------------------------------------------
-# ⚠️ REQUERIDO: Reemplaza "PEGA_AQUI_EL_CODE_DEL_PASO_1" por el código que copiaste arriba.
-POST {{authServer}}/oauth2/token
-Authorization: Basic {{clientId}} {{clientSecret}}
-Content-Type: application/x-www-form-urlencoded
 
 grant_type=authorization_code
-&code=PEGA_AQUI_EL_CODE_DEL_PASO_1
+&code=ugIicQnjvn_8GCGFpZmbrxIFrYFrTBer6uhYc10LEYCUqxuJe0qEGpDJk1-Xi9ijlItrbvnooq1ErGH19dlJ6iblnO_bUvlsKOtIizb1wv4sMcdS95nojmD8brhxNj3L
 &redirect_uri={{redirectUri}}
-&code_verifier={{codeVerifier}}
-
-
-
-
-
-### PASO 1: Solicitar el Código de Autorización
-GET http://localhost:9000/oauth2/authorize
-    ?response_type=code
-    &client_id=gateway-app
-    &scope=read write
-    &redirect_uri=http://servidor-gateway:8762/login/oauth2/code/gateway-app
-    &code_challenge=E9Melhoa2OwvFrGMTJguCH5wK6BFf_GI7mHaoM1v8jI
-    &code_challenge_method=S256
-# 🛠️ Usamos las credenciales reales confirmadas
-Authorization: Basic prueba admin123
-
-
-### ------------------------------------------------------------------------
-### PASO 2: Intercambiar el código temporal por el Token JWT
-### ------------------------------------------------------------------------
-# ⚠️ REQUERIDO: Tan pronto el paso 1 te devuelva el "302 Found",
-# toma el valor de "?code=XXXX" del encabezado 'Location', pégalo aquí abajo y ejecuta.
-POST http://localhost:9000/oauth2/token
-Authorization: Basic gateway-app gateway-secret
-Content-Type: application/x-www-form-urlencoded
-
-grant_type=authorization_code&code=PEGA_AQUI_EL_CODIGO_DE_REDIRECCION&redirect_uri=http://servidor-gateway:8762/login/oauth2/code/gateway-app&code_verifier=dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
