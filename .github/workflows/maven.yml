@@ -6,7 +6,8 @@ on:
   push:
     tags:
       - 'v*.*.*'
-
+permissions:
+  contents: write
 jobs:
   verify-build:
     runs-on: ubuntu-latest
