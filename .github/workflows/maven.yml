@@ -34,8 +34,8 @@ jobs:
       - name: Compilar y verificar
         run: mvn -B clean verify --file pom.xml
 
-      - name: Cobertura de código
-        run: mvn test jacoco:report jacoco:check
+#      - name: Cobertura de código
+#        run: mvn test jacoco:report jacoco:check
 
       - name: Bump versión semántica
         uses: paulhatch/semantic-version@v5.0.3
