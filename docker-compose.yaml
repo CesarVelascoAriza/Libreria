@@ -1,86 +1,197 @@
-version: "3.8"
 services:
   servidor-eureka:
-    build: Infraestructura/eureka-server/.
+    build:
+      context: .
+      dockerfile: Infraestructura/eureka-server/Dockerfile
     image: servidor-eureka
     ports:
-      - 8761:8761
+      - "8761:8761"
     environment:
-      - JAVA_OPTS=
-        -Xms256M
-        -Xms256M
-  servidor-gateways:
-    build: Infraestructura/getway-server/.
+      JAVA_OPTS: "-Xms256M -Xmx256M"
+      PORT: "8761"
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  servidor-gateway:
+    build:
+      context: .
+      dockerfile: Infraestructura/gateway-service/Dockerfile
     image: servidor-gateway
     ports:
-      - 8762:8762
+      - "8762:8762"
     environment:
-      - JAVA_OPTS=
-        -Xms256M
-        -Xms256M
-        -DEUREKA-SERVER=http://servidor-eureka:8761/eureka
-        -DPORT=8767
+      JAVA_OPTS: "-Xms256M -Xmx256M"
+      PORT: "8762"
+      EUREKA_SERVER: "http://servidor-eureka:8761/eureka"
+      EUREKA-SERVER: "http://servidor-eureka:8761/eureka"
+#      OAUTH-SERVER: "http://service-auth:9000"
+      OAUTH-SERVER: "http://service-auth:9000"
+    links:
+      - service-auth:localhost
     depends_on:
       - servidor-eureka
+      - service-auth
+    networks:
+      - app-network
+    restart: unless-stopped
+
   servidor-admin:
-    build: Infraestructura/admin-server/.
+    build:
+      context: .
+      dockerfile: Infraestructura/admin-server/Dockerfile
     image: servidor-admin
     ports:
-      - 8763:8763
+      - "8763:8763"
     environment:
-      - JAVA_OPTS=
-        -Xms256M
-        -Xms256M
-        -DEUREKA_SERVER=http://servidor-eureka:8761/eureka
-        -DPORT=8763
+      JAVA_OPTS: "-Xms256M -Xmx256M"
+      PORT: "8763"
+      EUREKA_SERVER: "http://servidor-eureka:8761/eureka"
+      EUREKA-SERVER: "http://servidor-eureka:8761/eureka"
     depends_on:
       - servidor-eureka
-      - servidor-gateways
+    networks:
+      - app-network
+    restart: unless-stopped
+
   service-auth:
-    build: Seguridad/Autorization-server/.
+    build:
+      context: .
+      dockerfile: Seguridad/seguridad/Dockerfile
     image: servidor-authorization
     ports:
-      - 9000:9000
+      - "9000:9000"
     environment:
-      - JAVA_OPTS=
-        -Xms256M
-        -Xms256M
-        -DEUREKA-SERVER=http://servidor-eureka:8761/eureka
-        -DPORT=9000
-    depends_on:
-      - servidor-eureka
-      - servidor-gateways
-      - servidor-admin
+      JAVA_OPTS: "-Xms256M -Xmx256M"
+      PORT: "9000"
+      EUREKA_SERVER: "http://servidor-eureka:8761/eureka"
+      EUREKA-SERVER: "http://servidor-eureka:8761/eureka"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/.well-known/openid-configuration"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+#    depends_on:
+#      - servidor-eureka
+    networks:
+      - app-network
+    restart: unless-stopped
+
   service-usuarios:
-    build: DominioNegocio/service-users/.
-    image: servidor-authorization
+    build:
+      context: .
+      dockerfile: DominioNegocio/service-users/Dockerfile
+    image: servidor-usuarios
     ports:
-      - 4000:4000
+      - "4000:4000"
     environment:
-      - JAVA_OPTS=
-        -Xms256M
-        -Xms256M
-        -DEUREKA-SERVER=http://servidor-eureka:8761/eureka
-        -DPORT=4000
+      JAVA_OPTS: "-Xms256M -Xmx256M"
+      PORT: "4000"
+      EUREKA_SERVER: "http://servidor-eureka:8761/eureka"
+      EUREKA-SERVER: "http://servidor-eureka:8761/eureka"
+      JDBC_URL: ${JDBC_URL:-jdbc:mysql://mysql-primary:3306/appdb}
+      JDBC_USERNAME: ${JDBC_USERNAME:-appuser}
+      JDBC_PASSWORD: ${JDBC_PASSWORD:-apppass}
     depends_on:
       - servidor-eureka
-      - servidor-gateways
-      - servidor-admin
-      - service-auth
+      - mysql-primary
+    networks:
+      - app-network
+    restart: unless-stopped
+
   service-libros:
-    build: DominioNegocio/service-books/.
+    build:
+      context: .
+      dockerfile: DominioNegocio/service-books/Dockerfile
     image: servicio-libros
     ports:
-      - 4001:4001
+      - "4001:4001"
     environment:
-      - JAVA_OPTS=
-        -Xms256M
-        -Xms256M
-        -DEUREKA-SERVER=http://servidor-eureka:8761/eureka
-        -DPORT=4001
+      JAVA_OPTS: "-Xms256M -Xmx256M"
+      PORT: "4001"
+      EUREKA_SERVER: "http://servidor-eureka:8761/eureka"
+      EUREKA-SERVER: "http://servidor-eureka:8761/eureka"
+      JDBC_URL: ${JDBC_URL:-jdbc:mysql://mysql-primary:3306/appdb}
+      JDBC_USERNAME: ${JDBC_USERNAME:-appuser}
+      JDBC_PASSWORD: ${JDBC_PASSWORD:-apppass}
     depends_on:
       - servidor-eureka
-      - servidor-gateways
-      - servidor-admin
-      - service-auth
-      - service-usuarios
+      - mysql-primary
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  mysql-primary:
+    image: mysql:8.0
+    container_name: mysql-primary
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: appdb
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppass
+    command: ["--default-authentication-plugin=mysql_native_password", "--server-id=1", "--log-bin=mysql-bin", "--binlog-format=ROW", "--gtid-mode=ON", "--enforce-gtid-consistency=ON"]
+    volumes:
+      - mysql-primary-data:/var/lib/mysql
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  mysql-replica:
+    image: mysql:8.0
+    container_name: mysql-replica
+    depends_on:
+      - mysql-primary
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+    command: ["--default-authentication-plugin=mysql_native_password", "--server-id=2", "--relay-log=relay-bin", "--read-only=1", "--gtid-mode=ON", "--enforce-gtid-consistency=ON"]
+    volumes:
+      - mysql-replica-data:/var/lib/mysql
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  kafka:
+    image: confluentinc/cp-kafka:7.6.0
+    container_name: servidor-kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka:29093'
+      KAFKA_LISTENERS: 'PLAINTEXT://0.0.0.0:29092,CONTROLLER://0.0.0.0:29093,PLAINTEXT_HOST://0.0.0.0:9092'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+      CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
+    networks:
+      - app-network # Corregido: Enlazado a la red real
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    ports:
+      - "8090:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+    networks:
+      - app-network # Corregido: Enlazado a la red real
+    depends_on:
+      - kafka
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql-primary-data:
+  mysql-replica-data:

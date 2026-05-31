@@ -1,0 +1,11 @@
+{
+  "name": "JetBrains Dev Container",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
+  },
+  "remoteUser": "devuser",
+  "workspaceMount": "source=C:\\Users\\cesar\\source\\repos\\Libreria,target=/projects,type=bind,consistency=cached",
+  "workspaceFolder": "/projects",
+  "runArgs": ["-p", "2223:22"]
+}

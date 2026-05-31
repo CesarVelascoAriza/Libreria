@@ -1,0 +1,31 @@
+### Variables Globales
+@authServer = http://localhost:9000
+@clientId = gateway-app
+@clientSecret = gateway-secret
+@redirectUri = http://localhost:8762/login/oauth2/code/gateway-app
+
+### =================================================================###
+### PASO 3.1: Obtener el Código de Autorización (Simulación)
+### Nota: En un entorno real, esta URL se abre en el navegador web para 
+### que el usuario ingrese sus credenciales (como hiciste con 'prueba').
+###http://localhost:8762/login/oauth2/code/gateway-app?code=ugIicQnjvn_8GCGFpZmbrxIFrYFrTBer6uhYc10LEYCUqxuJe0qEGpDJk1-Xi9ijlItrbvnooq1ErGH19dlJ6iblnO_bUvlsKOtIizb1wv4sMcdS95nojmD8brhxNj3L
+## http://localhost:9000/oauth2/authorize?response_type=code&client_id=gateway-app&scope=read&redirect_uri=http://localhost:8762/login/oauth2/code/gateway-app
+### =================================================================###
+GET {{authServer}}/oauth2/authorize
+    ?response_type=code
+    &client_id={{clientId}}
+    &scope=read
+    &redirect_uri={{redirectUri}}
+
+### =================================================================###
+### PASO 3.2: Intercambiar el Código por el Token de Acceso (JWT)
+### Cuando el navegador te redirija a la URI, copia el valor del 
+### parámetro '?code=...' y reemplázalo aquí abajo.
+### =================================================================###
+POST {{authServer}}/oauth2/token
+Content-Type: application-x-www-form-urlencoded
+Authorization: Basic {{clientId}} {{clientSecret}}
+
+grant_type=authorization_code
+&code=ugIicQnjvn_8GCGFpZmbrxIFrYFrTBer6uhYc10LEYCUqxuJe0qEGpDJk1-Xi9ijlItrbvnooq1ErGH19dlJ6iblnO_bUvlsKOtIizb1wv4sMcdS95nojmD8brhxNj3L
+&redirect_uri={{redirectUri}}

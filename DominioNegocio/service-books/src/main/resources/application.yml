@@ -2,16 +2,20 @@ spring:
   application:
     name: service-books
   datasource:
-    url: jdbc:mysql://localhost:3306/school #jdb de la localizacion de la base de datos
-    username: java
-    password: Adm1n@2021p@sw
+    url: ${JDBC_URL:jdbc:mysql://localhost:3306/libreria}
+    username: ${JDBC_USERNAME:libreria}
+    password: ${JDBC_PASSWORD:password}
     driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: always
   jpa:
+    defer-datasource-initialization: true
     hibernate:
       ddl-auto: create-drop
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL57Dialect
+        dialect: org.hibernate.dialect.MySQLDialect
    
 server:
   port: ${PORT:0} #Puerto dinamico

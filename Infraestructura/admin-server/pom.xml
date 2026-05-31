@@ -12,14 +12,13 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>admin-server</name>
     <description>admin-server</description>
-    <properties>
-        <java.version>17</java.version>
-        <spring-boot-admin.version>3.1.5</spring-boot-admin.version>
-    </properties>
+    
     <dependencies>
         <dependency>
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-starter-server</artifactId>
+            <version>4.0.4</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -30,19 +29,15 @@
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
         </dependency>
     </dependencies>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>de.codecentric</groupId>
-                <artifactId>spring-boot-admin-dependencies</artifactId>
-                <version>${spring-boot-admin.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-
-    </dependencyManagement>
 
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
