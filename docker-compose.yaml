@@ -24,7 +24,6 @@ services:
       JAVA_OPTS: "-Xms256M -Xmx256M"
       PORT: "8762"
       EUREKA_SERVER: "http://servidor-eureka:8761/eureka"
-      EUREKA-SERVER: "http://servidor-eureka:8761/eureka"
 #      OAUTH-SERVER: "http://service-auth:9000"
       OAUTH-SERVER: "http://service-auth:9000"
     links:
@@ -47,7 +46,6 @@ services:
       JAVA_OPTS: "-Xms256M -Xmx256M"
       PORT: "8763"
       EUREKA_SERVER: "http://servidor-eureka:8761/eureka"
-      EUREKA-SERVER: "http://servidor-eureka:8761/eureka"
     depends_on:
       - servidor-eureka
     networks:
@@ -65,14 +63,7 @@ services:
       JAVA_OPTS: "-Xms256M -Xmx256M"
       PORT: "9000"
       EUREKA_SERVER: "http://servidor-eureka:8761/eureka"
-      EUREKA-SERVER: "http://servidor-eureka:8761/eureka"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/.well-known/openid-configuration"]
-      interval: 5s
-      timeout: 3s
-      retries: 10
-#    depends_on:
-#      - servidor-eureka
+      OAUTH-SERVER: "http://service-auth:9000"
     networks:
       - app-network
     restart: unless-stopped
