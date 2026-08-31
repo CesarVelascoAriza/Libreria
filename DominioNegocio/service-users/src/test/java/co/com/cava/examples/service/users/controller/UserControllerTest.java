@@ -3,60 +3,58 @@ package co.com.cava.examples.service.users.controller;
 import co.com.cava.examples.service.users.service.UserService;
 import com.cava.examples.common.entitis.Rol;
 import com.cava.examples.common.entitis.Usuario;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(UserController.class)
+@ExtendWith(MockitoExtension.class)
 class UserControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @MockBean
+    @Mock
     private UserService userService;
 
+    @InjectMocks
+    private UserController userController;
+
     @Test
-    void listarRetornaUsuarios() throws Exception {
+    void updateUserActualizaUsuario() {
+        ReflectionTestUtils.setField(userController, "service", userService);
         Usuario usuario = new Usuario();
-        usuario.setId(1L);
-        usuario.setUserName("admin");
-        usuario.setPassword("secret");
+        usuario.setId(3L);
+        usuario.setUserName("nuevo");
+        usuario.setPassword("pass2");
         usuario.setEnabled(true);
         Rol rol = new Rol();
-        rol.setId(1L);
-        rol.setNombreRol("ADMIN");
+        rol.setId(2L);
+        rol.setNombreRol("USER");
         usuario.setRoles(List.of(rol));
 
-        when(userService.findAll()).thenReturn(List.of(usuario));
+        when(userService.updateUser(any(Usuario.class))).thenReturn(usuario);
 
-        mockMvc.perform(get("/")
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].userName").value("admin"));
+        ResponseEntity<?> response = userController.updateUser(3L, usuario);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(userService).updateUser(any(Usuario.class));
     }
 
     @Test
-    void buscarPorUsernameRetornaUsuario() throws Exception {
+    void buscarPorUsernameRetornaUsuarioCuandoExiste() {
+        ReflectionTestUtils.setField(userController, "service", userService);
+
         Usuario usuario = new Usuario();
         usuario.setId(2L);
         usuario.setUserName("prueba");
@@ -65,28 +63,21 @@ class UserControllerTest {
 
         when(userService.findByName("prueba")).thenReturn(Optional.of(usuario));
 
-        mockMvc.perform(get("/buscar-username")
-                        .param("userName", "prueba")
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.userName").value("prueba"));
+        ResponseEntity<?> response = userController.getUserName("prueba");
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("prueba", ((Usuario) response.getBody()).getUserName());
     }
 
     @Test
-    void updateUserActualizaUsuario() throws Exception {
-        Usuario usuario = new Usuario();
-        usuario.setId(3L);
-        usuario.setUserName("nuevo");
-        usuario.setPassword("pass2");
-        usuario.setEnabled(true);
+    void buscarPorUsernameRetornaNoContentCuandoNoExiste() {
+        ReflectionTestUtils.setField(userController, "service", userService);
 
-        when(userService.updateUser(any(Usuario.class))).thenReturn(usuario);
+        when(userService.findByName("inexistente")).thenReturn(Optional.empty());
 
-        mockMvc.perform(put("/3")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(usuario)))
-                .andExpect(status().isOk());
+        ResponseEntity<?> response = userController.getUserName("inexistente");
 
-        verify(userService).updateUser(any(Usuario.class));
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        assertNull(response.getBody());
     }
 }

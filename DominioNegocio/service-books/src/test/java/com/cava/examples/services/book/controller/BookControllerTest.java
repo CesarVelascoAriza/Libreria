@@ -1,135 +1,64 @@
 package com.cava.examples.services.book.controller;
 
+import com.cava.examples.common.entitis.Book;
+import com.cava.examples.common.entitis.Categoria;
+import com.cava.examples.services.book.service.BookService;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.util.ReflectionTestUtils;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-//@WebMvcTest(controllers = BookController.class)
+@ExtendWith(MockitoExtension.class)
 class BookControllerTest {
-	
-	/*@Autowired
-	private MockMvc mvc;
-	@MockitoBean
-	private BookService bookService;
-	
-	ObjectMapper mapper;
-	
-	@BeforeEach
-	void setUp() {
-		mapper = new ObjectMapper();
-	}
 
-	@Test
-	void testGetAllBooks() throws Exception {
-		//Given
-		when(bookService.findAll()).thenReturn(Datos.bookAll());
-		//when
-		mvc.perform(
-				MockMvcRequestBuilders.get("/")
-				.contentType(MediaType.APPLICATION_JSON)
-				)
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-		.andExpect(jsonPath("$[0].title").value("Como programar en java"))
-		.andDo(print())
-		;
-		//then
-		verify(bookService).findAll();
-	}
+    @Mock
+    private BookService bookService;
 
-/*
-	@Test
-	void getByName() throws Exception {
-		//Given
-		when(bookService.findByTitle("Como programar en java")).thenReturn(Datos.boock().stream().toList());
-		//when
-		mvc.perform(
-				MockMvcRequestBuilders.get("/searchname")
-						.param("name","Como programar en java")
-						.accept(MediaType.APPLICATION_JSON)
-		)
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$[0].title").value("Como programar en java"))
-				.andDo(print())
-				;
-		//then
-		verify(bookService).findByTitle(anyString());
-	}
-	@Test
-	void getByNameEmty() throws Exception {
-		//Given
-		when(bookService.findByTitle(anyString())).thenReturn(Datos.bookEmty().stream().toList());
-		//when
-		mvc.perform(
-						MockMvcRequestBuilders.get("/searchname")
-								.param("name",".net")
-								.accept(MediaType.APPLICATION_JSON)
-				)
-				.andExpect(status().isNoContent())
-				.andDo(print())
-		;
-		//then
-		verify(bookService).findByTitle(anyString());
-	}*/
-/* 
-	@Test
-	void saveBook() throws Exception {
+    @InjectMocks
+    private BookController bookController;
 
-		//Given
-		Book book = new Book(null,"Prueba","sub prueba",new Date(),new BigDecimal("50000"),new Categoria(1L,"Romance"));
-		when(bookService.save(any())).then(invocation ->{
-			Book b = invocation.getArgument(0);
-			b.setIsbn(1L);
-			return  b;
-		});
-		//when
-		mvc.perform(
-			MockMvcRequestBuilders.post("/")
-					.accept(MediaType.APPLICATION_JSON)
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(mapper.writeValueAsString(book))
-		)
-				.andExpect(status().isCreated())
-				.andExpect(jsonPath("$.isbn").value("1"))
-				.andExpect(jsonPath("$.title").value("Prueba"))
-				.andDo(print())
-		;
-		verify(bookService).save(any());
-	}
+    @Test
+    void updateBookCuandoExisteRetornaOk() {
+        ReflectionTestUtils.setField(bookController, "service", bookService);
+        Categoria categoria = new Categoria(1L, "Romance");
+        Book existente = new Book(7L, "Antes", "Sub", new Date(), new BigDecimal("10000"), categoria);
+        Book actualizacion = new Book(7L, "Despues", "Nuevo", new Date(), new BigDecimal("20000"), categoria);
 
-	@Test
-	void updateBook() throws Exception {
-		//Give
-		Book book = new Book(1L,"Prueba","sub prueba",new Date(),new BigDecimal("50000"),new Categoria(1L,"Romance"));
-		when(bookService.findById(any())).thenReturn(Datos.boock());
-		//when
-		mvc.perform(
-						MockMvcRequestBuilders.put("/1")
-								.accept(MediaType.APPLICATION_JSON)
-								.contentType(MediaType.APPLICATION_JSON)
-								.content(mapper.writeValueAsString(book))
-				)
-				.andExpect(status().isOk())
-				//.andExpect(jsonPath("$.isbn").value("1"))
-				//.andExpect(jsonPath("$.title").value("Prueba"))
-				.andDo(print())
-		;
-		//then
-		verify(bookService).findById(any());
-		verify(bookService).save(any());
-	}
+        when(bookService.findById(7L)).thenReturn(Optional.of(existente));
+        when(bookService.save(any(Book.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-	@Test
-	void deleteById() throws Exception {
+        ResponseEntity<?> response = bookController.updateBook(7L, actualizacion);
 
-		//Give
-		//when
-		mvc.perform(
-				MockMvcRequestBuilders.delete("/1")
-						.contentType(MediaType.APPLICATION_JSON)
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(bookService).save(any(Book.class));
+        assertEquals("Despues", ((Book) response.getBody()).getTitle());
+        assertEquals("Nuevo", ((Book) response.getBody()).getSubTitle());
+    }
 
-		).andExpect(status().isNoContent());
-		//then
-		verify(bookService).deleteById(any());
-	}
-		*/
+    @Test
+    void updateBookCuandoNoExisteRetornaNoContent() {
+        ReflectionTestUtils.setField(bookController, "service", bookService);
+        Book actualizacion = new Book(9L, "Titulo", "Sub", new Date(), new BigDecimal("20000"), new Categoria(2L, "Drama"));
+
+        when(bookService.findById(9L)).thenReturn(Optional.empty());
+
+        ResponseEntity<?> response = bookController.updateBook(9L, actualizacion);
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        assertNull(response.getBody());
+    }
 }

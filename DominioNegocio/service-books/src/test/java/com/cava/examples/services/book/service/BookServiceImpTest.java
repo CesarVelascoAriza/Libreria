@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -29,6 +30,7 @@ class BookServiceImpTest {
 
     @Test
     void findByIdRetornaLibroCuandoExiste() {
+        ReflectionTestUtils.setField(bookService, "repository", libroRepository);
         Categoria categoria = new Categoria(1L, "Romance");
         Book libro = new Book(5L, "Libro Test", "subtitulo", new Date(), new BigDecimal("15000"), categoria);
 
@@ -42,6 +44,7 @@ class BookServiceImpTest {
 
     @Test
     void savePersisteLibro() {
+        ReflectionTestUtils.setField(bookService, "repository", libroRepository);
         Categoria categoria = new Categoria(2L, "Drama");
         Book libro = new Book(null, "Nuevo", "descripcion", new Date(), new BigDecimal("30000"), categoria);
         Book guardado = new Book(10L, "Nuevo", "descripcion", new Date(), new BigDecimal("30000"), categoria);
