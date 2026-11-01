@@ -56,60 +56,6 @@
             <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
-
-    <!-- <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.1.2</version>
-                <configuration>
-                    <useSystemClassLoader>false</useSystemClassLoader>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
-                <configuration>
-                    <target>17</target>
-                    <source>17</source>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                        <exclude>
-                            <groupId>com.cava.examples.common.entitis</groupId>
-                            <artifactId>commons-usuarios</artifactId>
-                        </exclude>
-                        <exclude>
-                            <groupId>com.cava.examples.common.entitis</groupId>
-                            <artifactId>commons-service</artifactId>
-                        </exclude>
-                        <exclude>
-                            <groupId>com.cava.examples.common.entitis</groupId>
-                            <artifactId>commons-libros</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>-->
     <build>
         <plugins>
             <plugin>
