@@ -1,0 +1,248 @@
+### =================================================================###
+### Libreria - Pruebas de los servicios a traves del gateway
+### Cliente HTTP de IntelliJ (los scripts "> {% ... %}" guardan el token).
+### Docker: gateway en 8762. Local (sin Docker): cambiar @gateway a 8760.
+### Documentacion interactiva: {{gateway}}/swagger-ui.html
+### =================================================================###
+@gateway = http://localhost:8762
+@authServer = http://localhost:9000
+@clientId = gateway-app
+@clientSecret = gateway-secret
+
+### =================================================================###
+### 0. Preparacion: registrar un usuario demo (una sola vez).
+### Usa un token de aplicacion (client_credentials) solo para esto;
+### la clave se cifra en el auth. Si ya existe, omitir.
+### =================================================================###
+POST {{authServer}}/oauth2/token
+Authorization: Basic {{clientId}} {{clientSecret}}
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials&scope=read write
+
+> {%
+    client.global.set("appToken", response.body.access_token);
+%}
+
+###
+POST {{gateway}}/api/users
+Authorization: Bearer {{appToken}}
+Content-Type: application/json
+
+{
+  "userName": "demo",
+  "password": "demo1234",
+  "enabled": true,
+  "roles": [ { "id": 1 } ]
+}
+
+### =================================================================###
+### 1. LOGIN de usuario (via gateway -> auth) -> guarda {{token}}
+### =================================================================###
+POST {{gateway}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "demo",
+  "password": "demo1234"
+}
+
+> {%
+    client.test("Login correcto", function () {
+        client.assert(response.status === 200, "Se esperaba 200");
+    });
+    client.global.set("token", response.body.access_token);
+%}
+
+### Login con clave incorrecta (espera 401)
+POST {{gateway}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "demo",
+  "password": "incorrecta"
+}
+
+> {%
+    client.test("Credenciales invalidas", function () {
+        client.assert(response.status === 401, "Se esperaba 401");
+    });
+%}
+
+### Sin token (espera 401)
+GET {{gateway}}/api/books
+
+> {%
+    client.test("Sin token no pasa", function () {
+        client.assert(response.status === 401, "Se esperaba 401");
+    });
+%}
+
+### LOGOUT: revoca el token actual (204). Despues de esto el token da 401.
+### Vuelva a ejecutar el login para obtener uno nuevo.
+POST {{gateway}}/api/auth/logout
+Authorization: Bearer {{token}}
+
+> {%
+    client.test("Logout correcto", function () {
+        client.assert(response.status === 204, "Se esperaba 204");
+    });
+%}
+
+### Token revocado (espera 401 si se ejecuta justo despues del logout)
+GET {{gateway}}/api/books
+Authorization: Bearer {{token}}
+
+### =================================================================###
+### 1b. Token de aplicacion (client_credentials) - solo para el cliente,
+### no representa a un usuario. Guarda {{token}}.
+### =================================================================###
+POST {{authServer}}/oauth2/token
+Authorization: Basic {{clientId}} {{clientSecret}}
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials&scope=read write
+
+> {%
+    client.test("Token obtenido", function () {
+        client.assert(response.status === 200, "Se esperaba 200");
+    });
+    client.global.set("token", response.body.access_token);
+%}
+
+### =================================================================###
+### 2. LIBROS  (/api/books -> service-books)
+### =================================================================###
+
+### Listar libros
+GET {{gateway}}/api/books
+Authorization: Bearer {{token}}
+
+### Listar libros paginado
+GET {{gateway}}/api/books/pagina?page=0&size=5
+Authorization: Bearer {{token}}
+
+### Buscar libro por id
+GET {{gateway}}/api/books/1
+Authorization: Bearer {{token}}
+
+### Crear libro (categoria 1 = romance, 2 = drama, 3 = comedia)
+POST {{gateway}}/api/books
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Cien anos de soledad",
+  "subTitle": "Edicion de bolsillo",
+  "datePublication": "1967-05-30",
+  "price": 45000,
+  "categoria": { "id": 1 }
+}
+
+> {%
+    client.test("Libro creado", function () {
+        client.assert(response.status === 201, "Se esperaba 201");
+    });
+    client.global.set("bookId", response.body.isbn);
+%}
+
+### Actualizar libro creado (404 si no existe)
+PUT {{gateway}}/api/books/{{bookId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Cien anos de soledad (2da edicion)",
+  "subTitle": "Tapa dura",
+  "datePublication": "1967-05-30",
+  "price": 60000,
+  "categoria": { "id": 1 }
+}
+
+### Eliminar libro creado
+DELETE {{gateway}}/api/books/{{bookId}}
+Authorization: Bearer {{token}}
+
+### =================================================================###
+### 3. USUARIOS  (/api/users -> service-users)
+### Los roles disponibles son 1 = USER, 2 = ADMIN, 3 = PROFESOR
+### POST y PUT pasan por el auth, que cifra la clave (BCrypt).
+### =================================================================###
+
+### Listar usuarios
+GET {{gateway}}/api/users
+Authorization: Bearer {{token}}
+
+### Listar usuarios paginado
+GET {{gateway}}/api/users/pagina?page=0&size=5
+Authorization: Bearer {{token}}
+
+### Buscar usuario por id
+GET {{gateway}}/api/users/1
+Authorization: Bearer {{token}}
+
+### Buscar usuario por nombre de usuario
+GET {{gateway}}/api/users/buscar-username?userName=prueba
+Authorization: Bearer {{token}}
+
+### Crear usuario (la respuesta trae la clave cifrada)
+POST {{gateway}}/api/users
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userName": "Lucas",
+  "password": "lucasFil123",
+  "enabled": true,
+  "roles": [ { "id": 1 } ]
+}
+
+> {%
+    client.test("Usuario creado", function () {
+        client.assert(response.status === 201, "Se esperaba 201");
+        client.assert(response.body.password.startsWith("$2"), "La clave debe venir cifrada");
+    });
+    client.global.set("userId", response.body.id);
+%}
+
+### Login con el usuario recien creado
+POST {{gateway}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "Lucas",
+  "password": "lucasFil123"
+}
+
+> {%
+    client.test("Login del nuevo usuario", function () {
+        client.assert(response.status === 200, "Se esperaba 200");
+    });
+    client.global.set("token", response.body.access_token);
+%}
+
+### Actualizar usuario creado (la clave es obligatoria)
+PUT {{gateway}}/api/users/{{userId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userName": "Lucas",
+  "password": "lucasFil123",
+  "enabled": false,
+  "roles": [ { "id": 1 }, { "id": 3 } ]
+}
+
+### Eliminar usuario creado
+DELETE {{gateway}}/api/users/{{userId}}
+Authorization: Bearer {{token}}
+
+### =================================================================###
+### 4. Documentacion OpenAPI (publica, sin token)
+### =================================================================###
+
+### OpenAPI del servicio de libros
+GET {{gateway}}/api/books/v3/api-docs
+
+### OpenAPI del servicio de usuarios
+GET {{gateway}}/api/users/v3/api-docs

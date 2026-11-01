@@ -49,17 +49,14 @@ public class SecurityConfig {
                 
                 // 2. Control de acceso a las rutas
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers("/actuator/**").permitAll()
+                        .pathMatchers("/actuator/**",
+                                "/swagger-ui.html", "/swagger-ui/**", "/webjars/**",
+                                "/v3/api-docs/**", "/api/*/v3/api-docs/**",
+                                "/api/auth/login").permitAll()
                         .anyExchange().authenticated()
                 )
                 
-                // 3. Configuración explícita del Cliente OAuth2 (Reactivo)
-                .oauth2Login(oauth2 -> oauth2
-                        // Esto obliga a WebFlux a capturar correctamente el callback de redirección sin romper el hilo de Netty
-                        .authenticationMatcher(org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers.pathMatchers("/login/oauth2/code/**"))
-                )
-                
-                // 4. Configuración del Resource Server
+                // 3. Configuración del Resource Server
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(Customizer.withDefaults())
                 )

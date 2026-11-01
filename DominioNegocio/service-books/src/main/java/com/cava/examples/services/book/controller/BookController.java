@@ -21,7 +21,7 @@ public class BookController extends CommonController<Book, BookService> {
 	public ResponseEntity<?> updateBook(@PathVariable Long id , @RequestBody Book book){
 		Optional<Book> bookOptinal = service.findById(id);
 		if (!bookOptinal.isPresent()) {
-			return ResponseEntity.noContent().build();
+			return ResponseEntity.notFound().build();
 		}
 		bookOptinal.map(b-> {
 			b.setTitle(book.getTitle());
