@@ -16,7 +16,7 @@ spring:
   security:
     oauth2:
       authorizationserver:
-        issuer: http://localhost:9000 # Cambia por tu dominio/gateway en producción
+        issuer: ${OAUTH-SERVER:http://localhost:9000} # Cambia por tu dominio/gateway en producción
         public-key: | # Clave pública para verificar tokens JWT
           -----BEGIN PUBLIC KEY-----
           MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQ...
