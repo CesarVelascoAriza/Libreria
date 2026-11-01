@@ -1,0 +1,22 @@
+name: Limpiar pre-release de develp
+
+on:
+  pull_request:
+    types: [closed]
+    branches: ["master"]
+
+permissions:
+  contents: write
+
+jobs:
+  delete-prerelease:
+    name: Eliminar pre-release develp-latest
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+
+    steps:
+      - name: Eliminar release y tag
+        run: gh release delete develp-latest --cleanup-tag --yes || true
