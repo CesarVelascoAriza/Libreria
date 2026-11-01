@@ -2,9 +2,9 @@ name: CI/CD Java con Git Flow
 
 on:
   pull_request:
-    branches: ["develop", "master"]
+    branches: ["develop", "develp", "master"]
   push:
-    branches: ["develop", "master"]
+    branches: ["develop", "develp", "master"]
     tags:
       - 'v*.*.*'
 
@@ -36,8 +36,7 @@ jobs:
           cache: maven
 
       - name: Ejecutar pruebas del microservicio
-        working-directory: ${{ matrix.module }}
-        run: ./mvnw test
+        run: mvn -B -pl ${{ matrix.module }} -am test
 
   release:
     name: Crear release
