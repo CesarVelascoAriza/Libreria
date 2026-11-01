@@ -6,13 +6,13 @@
     <parent>
         <groupId>com.cava.examples</groupId>
         <artifactId>Infraestructura</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.1.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     
     <groupId>com.cava.examples</groupId>
     <artifactId>gateway-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0</version>
     <name>gateway-service</name>
     <description>Spring Cloud Gateway Server</description>
 

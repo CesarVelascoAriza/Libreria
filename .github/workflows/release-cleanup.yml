@@ -1,0 +1,56 @@
+name: Publicar release y limpiar
+
+on:
+  pull_request:
+    types: [closed]
+    branches: ["master"]
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    name: Crear tag/release y eliminar rama release
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Version desde el nombre de la rama
+        run: |
+          VERSION="${{ github.event.pull_request.head.ref }}"
+          VERSION="${VERSION#release/}"
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "Rama invalida"; exit 1; }
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+
+      - name: Generar artefactos
+        run: mvn -B package -DskipTests
+
+      - name: Crear tag y release
+        run: |
+          gh release create "v$VERSION" \
+            --target "${{ github.event.pull_request.merge_commit_sha }}" \
+            --title "v$VERSION" \
+            --generate-notes \
+            DominioNegocio/service-books/target/*.jar \
+            DominioNegocio/service-users/target/*.jar \
+            Seguridad/seguridad/target/*.jar \
+            Infraestructura/gateway-service/target/*.jar
+
+      - name: Eliminar pre-release de develp
+        run: gh release delete develp-latest --cleanup-tag --yes || true
+
+      - name: Eliminar rama release
+        run: git push origin --delete "${{ github.event.pull_request.head.ref }}"
