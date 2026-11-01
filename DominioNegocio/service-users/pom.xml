@@ -7,12 +7,12 @@
     <parent>
         <groupId>com.cava.examples</groupId>
         <artifactId>DominioNegocio</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.1.0</version>
     </parent>
     
     <groupId>com.cava.examples</groupId>
     <artifactId>service-users</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0</version>
     <name>service-users</name>
     <description>service-users</description>
 
@@ -20,13 +20,13 @@
         <dependency>
             <groupId>com.cava.examples</groupId>
             <artifactId>commons-service</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.1.0</version>
         </dependency>
         
         <dependency>
             <groupId>com.cava.examples</groupId>
             <artifactId>commons-usuarios</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.1.0</version>
         </dependency>
     </dependencies>
     
