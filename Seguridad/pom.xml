@@ -12,6 +12,15 @@
         <module>seguridad</module>
     </modules>
 
+    <profiles>
+        <profile>
+            <id>legacy-authorization-server</id>
+            <modules>
+                <module>Autorization-server</module>
+            </modules>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>

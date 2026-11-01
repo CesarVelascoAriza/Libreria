@@ -9,7 +9,7 @@ spring:
         jwt:
           # Aquí va la URL base de tu Servidor de Autorización (el que configuramos a las 9000)
           issuer-uri: ${OAUTH-SERVER:http://localhost:9000}
-          jwk-set-uri: ${OAUTH-SERVER:http://localhost:9000/oauth2/jwks}
+          jwk-set-uri: ${OAUTH-SERVER:http://localhost:9000}/oauth2/jwks
       client:
         registration:
           gateway-app:
@@ -22,10 +22,10 @@ spring:
               - write
         provider:
           gateway-app:
-            authorization-uri: ${OAUTH-SERVER:http://localhost:9000/oauth2/authorize}
-            token-uri: ${OAUTH-SERVER:http://localhost:9000/oauth2/token}
-            jwk-set-uri: ${OAUTH-SERVER:http://localhost:9000/oauth2/jwks}
-            user-info-uri: ${OAUTH-SERVER:http://localhost:9000/userinfo}
+            authorization-uri: ${OAUTH-SERVER:http://localhost:9000}/oauth2/authorize
+            token-uri: ${OAUTH-SERVER:http://localhost:9000}/oauth2/token
+            jwk-set-uri: ${OAUTH-SERVER:http://localhost:9000}/oauth2/jwks
+            user-info-uri: ${OAUTH-SERVER:http://localhost:9000}/userinfo
             user-name-attribute: sub
   cloud:
     gateway:
@@ -36,6 +36,37 @@ spring:
               uri: lb://service-books
               predicates:
                 - Path=/api/books/**
+              filters:
+                - StripPrefix=2
+            - id: auth
+              uri: lb://service-oauth2-authorization-server
+              predicates:
+                - Path=/api/auth/**
+              filters:
+                - StripPrefix=1
+            # Escritura de usuarios pasa por el auth para cifrar la clave
+            - id: service-users-write
+              uri: lb://service-oauth2-authorization-server
+              predicates:
+                - Path=/api/users/**
+                - Method=POST,PUT
+              filters:
+                - StripPrefix=1
+            - id: service-users
+              uri: lb://service-users
+              predicates:
+                - Path=/api/users/**
+              filters:
+                - StripPrefix=2
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - name: service-books
+        url: /api/books/v3/api-docs
+      - name: service-users
+        url: /api/users/v3/api-docs
 
 server:
   port: ${PORT:8760}

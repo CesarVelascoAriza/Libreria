@@ -66,62 +66,64 @@ public class ServerAuthorizationConfig {
     }
 
     @Bean
-@Order(1)
-public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception {
-    OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
-            new OAuth2AuthorizationServerConfigurer();
+    @Order(1)
+    public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception {
+        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
+                new OAuth2AuthorizationServerConfigurer();
 
-    authorizationServerConfigurer
-            .oidc(Customizer.withDefaults()); // Habilita OpenID Connect 1.0
+        authorizationServerConfigurer
+                .oidc(Customizer.withDefaults()); // Habilita OpenID Connect 1.0
 
-    http
-            .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
-            .with(authorizationServerConfigurer, Customizer.withDefaults())
-            .authorizeHttpRequests(authorize -> authorize
-                    .anyRequest().authenticated()
-            )
-            // 🛠️ FIX 1: Habilitar HTTP Basic para que el Gateway pueda intercambiar el token por detrás
-            .httpBasic(Customizer.withDefaults())
-            // 🛠️ FIX 2: El formulario de login debe estar amarrado al contenedor de OAuth2
-            .formLogin(Customizer.withDefaults());
+        http
+                .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
+                .with(authorizationServerConfigurer, Customizer.withDefaults())
+                .authorizeHttpRequests(authorize -> authorize
+                        .anyRequest().authenticated()
+                )
+                // 🛠️ FIX 1: Habilitar HTTP Basic para que el Gateway pueda intercambiar el token por detrás
+                .httpBasic(Customizer.withDefaults())
+                // 🛠️ FIX 2: El formulario de login debe estar amarrado al contenedor de OAuth2
+                .formLogin(Customizer.withDefaults());
 
-    http.exceptionHandling(exceptions -> exceptions
-            .defaultAuthenticationEntryPointFor(
-                    new LoginUrlAuthenticationEntryPoint("/login"),
-                    new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
-            )
-    );
+        http.exceptionHandling(exceptions -> exceptions
+                .defaultAuthenticationEntryPointFor(
+                        new LoginUrlAuthenticationEntryPoint("/login"),
+                        new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
+                )
+        );
 
-    return http.build();
-}
+        return http.build();
+    }
+
     @Bean
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable()) // 🔓 Mantenemos CSRF deshabilitado provisionalmente para pruebas locales
                 .authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers("/actuator/**", "/login").permitAll()    
-                    .anyRequest().authenticated()
+                        .requestMatchers("/actuator/**", "/login", "/auth/login", "/auth/revoked/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 // 💻 Habilitamos el login por formulario en el filtro por defecto
-                .formLogin(Customizer.withDefaults()); 
+                .oauth2ResourceServer(rs -> rs.jwt(Customizer.withDefaults()))
+                .formLogin(Customizer.withDefaults());
 
         return http.build();
     }
 
-@Bean
-public DaoAuthenticationProvider authenticationProvider(
-        UserDetailsService userDetailsService, 
-        PasswordEncoder passwordEncoder) {
-    
-    // 👤 Pasamos el servicio directamente en el constructor requerido
-    DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService); 
-    
-    // 🔐 Asignamos el encriptador de contraseñas
-    provider.setPasswordEncoder(passwordEncoder);       
-    
-    return provider;
-}
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider(
+            UserDetailsService userDetailsService,
+            PasswordEncoder passwordEncoder) {
+
+        // 👤 Pasamos el servicio directamente en el constructor requerido
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
+
+        // 🔐 Asignamos el encriptador de contraseñas
+        provider.setPasswordEncoder(passwordEncoder);
+
+        return provider;
+    }
     /*@Bean
     @Order(1)
     public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -158,7 +160,7 @@ public DaoAuthenticationProvider authenticationProvider(
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers("/actuator/**", "/login").permitAll()    
+                    .requestMatchers("/actuator/**", "/login", "/auth/login", "/auth/revoked/**").permitAll()
                     .anyRequest().authenticated()
                         
                 )
@@ -179,13 +181,13 @@ public DaoAuthenticationProvider authenticationProvider(
                 // 🔄 Flujos anteriores
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS) 
+                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .authorizationGrantType(new AuthorizationGrantType("password"))
                 .redirectUri("http://localhost:8762/login/oauth2/code/gateway-app")
                 .scope("read")
                 .scope("write")
                 .clientSettings(ClientSettings.builder()
-                        .requireProofKey(false) 
+                        .requireProofKey(false)
                         .build())
                 .build();
 
@@ -283,29 +285,40 @@ public DaoAuthenticationProvider authenticationProvider(
     }
 
     @Bean
+    public org.springframework.security.oauth2.jwt.JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwkSource) {
+        return new org.springframework.security.oauth2.jwt.NimbusJwtEncoder(jwkSource);
+    }
+
+    @Bean
+    public org.springframework.security.authentication.AuthenticationManager authenticationManager(
+            DaoAuthenticationProvider authenticationProvider) {
+        return new org.springframework.security.authentication.ProviderManager(authenticationProvider);
+    }
+
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
     // 🛠️ Reemplaza este Bean en tu ServerAuthorizationConfig
 
     @Bean
-public OAuth2TokenCustomizer<JwtEncodingContext> tokenCustomizer() {
-    return context -> {
-        if (context.getTokenType().getValue().equals("access_token")) {
-            // 👤 Extraemos el principal del contexto del token
-            Object principal = context.getPrincipal();
-            
-            // 🔄 Si el principal es una instancia de Authentication, extraemos sus roles
-            if (principal instanceof org.springframework.security.core.Authentication authentication) {
-                Set<String> roles = authentication.getAuthorities().stream()
-                        .map(org.springframework.security.core.GrantedAuthority::getAuthority)
-                        .map(authority -> authority.startsWith("ROLE_") ? authority : "ROLE_" + authority)
-                        .collect(Collectors.toSet());
+    public OAuth2TokenCustomizer<JwtEncodingContext> tokenCustomizer() {
+        return context -> {
+            if (context.getTokenType().getValue().equals("access_token")) {
+                // 👤 Extraemos el principal del contexto del token
+                Object principal = context.getPrincipal();
 
-                // 🔑 Guardamos los roles en el Claim del JWT
-                context.getClaims().claim("roles", roles);
+                // 🔄 Si el principal es una instancia de Authentication, extraemos sus roles
+                if (principal instanceof org.springframework.security.core.Authentication authentication) {
+                    Set<String> roles = authentication.getAuthorities().stream()
+                            .map(org.springframework.security.core.GrantedAuthority::getAuthority)
+                            .map(authority -> authority.startsWith("ROLE_") ? authority : "ROLE_" + authority)
+                            .collect(Collectors.toSet());
+
+                    // 🔑 Guardamos los roles en el Claim del JWT
+                    context.getClaims().claim("roles", roles);
+                }
             }
-        }
-    };
-}
+        };
+    }
 }

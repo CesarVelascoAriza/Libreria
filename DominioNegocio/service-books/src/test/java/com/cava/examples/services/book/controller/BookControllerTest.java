@@ -19,6 +19,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -50,7 +51,7 @@ class BookControllerTest {
     }
 
     @Test
-    void updateBookCuandoNoExisteRetornaNoContent() {
+    void updateBookCuandoNoExisteRetornaNotFound() {
         ReflectionTestUtils.setField(bookController, "service", bookService);
         Book actualizacion = new Book(9L, "Titulo", "Sub", new Date(), new BigDecimal("20000"), new Categoria(2L, "Drama"));
 
@@ -58,7 +59,8 @@ class BookControllerTest {
 
         ResponseEntity<?> response = bookController.updateBook(9L, actualizacion);
 
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertNull(response.getBody());
+        verify(bookService, never()).save(any(Book.class));
     }
 }
